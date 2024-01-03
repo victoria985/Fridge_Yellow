@@ -55,6 +55,31 @@ def print_content_fridge():
 
 recepy = {}
 
+def recepy_create(input_string):
+    recepy = {}    
+    pairs = input_string.split(',')
+    
+    for pair in pairs:
+        key_value = pair.strip().split(':')
+        
+        if len(key_value) == 2:
+            key = key_value[0].strip()
+            value = key_value[1].strip()
+            
+            try:
+                recepy[key] = float(value)
+            except ValueError:
+                recepy[key] = value  
+        else:
+            print(f"Ignoring invalid pair: {pair}")
+    
+    print('Recepy has beed created')
+    for key in recepy:
+        print(f'{key} : {recepy[key]}')
+    return recepy
+
+    
+
 def check_recepy():
     pass
 
@@ -76,6 +101,7 @@ def main(run = True):
         print("2: Remove from the fridge")
         print("3: Check for Product")
         print("4: Show conntent of the fridge")
+        print("5: Recepy creation")
         choice = input("Choice: ")
         if choice == "0":
             run == False
@@ -92,6 +118,10 @@ def main(run = True):
             check_product(name)
         if choice == '4':
             print_content_fridge
+        if choice == '5':
+            recepy = input('Please write items needed for recepy: ')
+            recepy_create(recepy)
+
 
 
 
