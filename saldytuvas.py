@@ -34,9 +34,16 @@ def add_product(key, value = 0):
 def remove_product(name):
     
     if name in fridge_content.keys():
-        del fridge_content[name]
-        print(f'Item {name} has been removed from the fridge')
-        print(f'Fridge now has: {fridge_content}')
+        print(f'Would you like to remove all {name} form the fridge?')
+        condition = input('y/n: ')
+        if condition.lower() == 'y':
+            del fridge_content[name]
+            print(f'Item {name} has been removed from the fridge')
+            print(f'Fridge now has: {fridge_content}')
+        elif condition.lower() == 'n':
+            print(f'Type amount of {name} you would like to remove')
+            r_product = input()
+            fridge_content[name] = fridge_content[name] - r_product
     else:
         print('Item has not been found in the fridge, maybe you have already removed it from the fridge')
 
@@ -80,7 +87,7 @@ def recepy_create(input_string):
     
 
 def check_recepy(fridge_content, recepy):
-    for item in recepy:
+    pass
 
 
 # Main function
@@ -134,6 +141,5 @@ remove_product('pienas')
 print_content_fridge()
 print(recepy)
 check_recepy()
-recepy_fail()
 
 main()
