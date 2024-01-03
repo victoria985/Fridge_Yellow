@@ -3,17 +3,18 @@
 
 Reikalavimai:
 
-* Šaldytuvo turinys - žodynas, kurio raktas yra produkto pavadinimas, reikšmė - kiekis (float).
-* Pridėti produktą į šaldytuvą. Pridedant egzistuojantį produktą, kiekiai sudedami su esančiais.
-* Išimti produktą iš šaldytuvo. Išimant egzistuojantį produktą, kiekis atitinkamai sumažinamas.
-* Patikrinti, ar reikiamas produkto kiekis yra šaldytuve.
-* Išspausdinti visą šaldytuvo turinį su kiekiais.
+* User inputo, terminalo meniu, iseiga.
+* Šaldytuvo turinys - žodynas, kurio raktas yra produkto pavadinimas, reikšmė - kiekis (float). Yra
+* Pridėti produktą į šaldytuvą. Pridedant egzistuojantį produktą, kiekiai sudedami su esančiais. Yra
+* Išimti produktą iš šaldytuvo. Išimant egzistuojantį produktą, kiekis atitinkamai sumažinamas. Yra
+* Patikrinti, ar reikiamas produkto kiekis yra šaldytuve. Yra
+* Išspausdinti visą šaldytuvo turinį su kiekiais. Reikia
 
 BONUS:
 
 * Patikrinti, ar receptas išeina. 
 ** Recepto įvedimas vyksta viena eilute, kuri po to išdalinama. Pva.: Sūris: 0.5, Pomidoras: 2, Duona: 0.4
-** Jeigu receptas neišeina, išvardinti kiek ir kokių produktų trūksta.
+*** Jeigu receptas neišeina, išvardinti kiek ir kokių produktų trūksta.
 
 """
 
@@ -43,8 +44,9 @@ def check_product(name):
 
 def print_content_fridge():
     
-    for key, value in fridge_content:
-        print(f'{key} :    {value}')
+    print(fridge_content)
+
+# Bonus tasks
 
 recepy = 0
 
@@ -57,11 +59,28 @@ def input_recepy():
 def recepy_fail():
     pass
 
+# Main function
+
+def main():
+    while True:
+        print("---[ Tasks ]---")
+        print("0: Exit")
+        print("1: Print all tasks")
+        print("11: Print only undone tasks")
+        print("2: Add a task")
+        print('3: Mark task done/undone')
+        print("4: Remove a task")
+        choice = input("Choice: ")
+        if choice == "0":
+            break
+        
+        
 
 # check test for the fridge
 
 add_product('pienas', 1.5)
 add_product('pomidoras', 7.58)
+add_product('kiausiniai', 50)
 check_product('pienas')
 remove_product('pienas')
 print_content_fridge()
