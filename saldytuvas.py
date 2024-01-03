@@ -73,21 +73,15 @@ def recepy_create(input_string):
         else:
             print(f"Ignoring invalid pair: {pair}")
     
-    print('Recepy has beed created')
+    print('Recepy has beed created:')
     for key in recepy:
         print(f'{key} : {recepy[key]}')
     return recepy
-
     
 
-def check_recepy():
-    pass
+def check_recepy(fridge_content, recepy):
+    for item in recepy:
 
-def input_recepy():
-    pass
-
-def recepy_fail():
-    pass
 
 # Main function
 
@@ -140,7 +134,6 @@ remove_product('pienas')
 print_content_fridge()
 print(recepy)
 check_recepy()
-input_recepy()
 recepy_fail()
 
 main()
