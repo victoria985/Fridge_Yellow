@@ -137,6 +137,5 @@ add_product('pomidoras', 7.58)
 add_product('kiausiniai', 50)
 check_product('pienas')
 print_content_fridge()
-check_recepy()
 
 main()
