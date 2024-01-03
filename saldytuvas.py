@@ -30,6 +30,8 @@ def add_product(key, value = 0):
         fridge_content[key] = value
         print(f'{value} of {key} has been added to the fridge.')
         print(fridge_content)
+    
+    return fridge_content
 
 def remove_product(name):
     
@@ -42,10 +44,13 @@ def remove_product(name):
             print(f'Fridge now has: {fridge_content}')
         elif condition.lower() == 'n':
             print(f'Type amount of {name} you would like to remove')
-            r_product = input()
+            r_product = int(input())
             fridge_content[name] = fridge_content[name] - r_product
+            print(f'{r_product} {name} has been removed from the fridge')
     else:
         print('Item has not been found in the fridge, maybe you have already removed it from the fridge')
+    
+    return fridge_content
 
 def check_product(name):
     if name in fridge_content.keys():
@@ -82,21 +87,23 @@ def recepy_create(input_string):
     print('Recepy has beed created:')
     for key in recepy:
         print(f'{key} : {recepy[key]}')
+    
     return recepy
     
 
-def check_recepy(fridge_content, recepy):
+def check_recepy(recepy = {}):
     
+    missing_ammount = {}
+    recepy_ammount = {}
+    missing_items = []
+
     for key, value in recepy.items():
         if key in fridge_content:
             if recepy[key] <= fridge_content[key]:
-                missing_ammount = {}
                 missing_ammount[key] = recepy[key] - fridge_content[key]
             else:
-                recepy_ammount = {}
                 recepy_ammount[key] = recepy[key]
         else:
-            missing_items = []
             missing_items.append(key)
     
     if missing_ammount == {} and missing_items == []:
@@ -127,13 +134,14 @@ def main(run = True):
         print("3: Check for Product")
         print("4: Show conntent of the fridge")
         print("5: Recepy creation")
+        print("6: Recepy check")
         choice = input("Choice: ")
         if choice == "0":
             run == False
             break
         if choice == '1':
             key = input('What product would you like to add?: ')
-            value = input('Ammount of product you want to add: ')
+            value = int(input('Ammount of product you want to add: '))
             add_product(key, value)
         if choice == '2':
             name = input('What product would you like to remove?: ')
@@ -142,10 +150,12 @@ def main(run = True):
             name = input('What product you are looking for?')
             check_product(name)
         if choice == '4':
-            print_content_fridge
+            print_content_fridge()
         if choice == '5':
             recepy = input('Please write items needed for recepy: ')
             recepy_create(recepy)
+        if choice == '6':
+            check_recepy()
         
 
 # check test for the fridge
