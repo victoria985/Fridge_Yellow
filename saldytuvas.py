@@ -53,7 +53,7 @@ def print_content_fridge():
 
 # Bonus tasks
 
-recepy = 0
+recepy = {}
 
 def check_recepy():
     pass
@@ -66,17 +66,19 @@ def recepy_fail():
 
 # Main function
 
-def main():
-    while True:
+def main(run = True):
+
+    while run == True:
+
         print("Yellow Submerged Fridge")
         print("0: Exit")
         print("1: Add to the fridge")
         print("2: Remove from the fridge")
-        print("2: Add a task")
-        print('3: Mark task done/undone')
-        print("4: Remove a task")
+        print("3: Check for Product")
+        print("4: Show conntent of the fridge")
         choice = input("Choice: ")
         if choice == "0":
+            run == False
             break
         if choice == '1':
             key = input('What product would you like to add?: ')
@@ -85,6 +87,13 @@ def main():
         if choice == '2':
             name = input('What product would you like to remove?: ')
             remove_product(name)
+        if choice == '3':
+            name = input('What product you are looking for?')
+            check_product(name)
+        if choice == '4':
+            print_content_fridge
+
+
 
         
         
@@ -103,3 +112,5 @@ print(recepy)
 check_recepy()
 input_recepy()
 recepy_fail()
+
+main()
