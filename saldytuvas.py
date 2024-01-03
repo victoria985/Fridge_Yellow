@@ -56,11 +56,10 @@ def check_product(name):
 
 def print_content_fridge():
     
-    print(fridge_content)
+    for key, value in fridge_content.items():
+        print(f'* {key} : {value}')
 
 # Bonus tasks
-
-recepy = {}
 
 def recepy_create(input_string):
     recepy = {}    
@@ -137,9 +136,7 @@ add_product('pienas', 2.3)
 add_product('pomidoras', 7.58)
 add_product('kiausiniai', 50)
 check_product('pienas')
-remove_product('pienas')
 print_content_fridge()
-print(recepy)
 check_recepy()
 
 main()
