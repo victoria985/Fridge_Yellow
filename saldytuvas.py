@@ -19,21 +19,19 @@ BONUS:
 """
 
 
-fridge_content = {}
-
-def add_product(key, value = 0):
-    if key in fridge_content.keys():
-        fridge_content[key] = fridge_content[key] + value
-        print(f'{value} of {key} has been added to the fridge.')
+def add_product(fridge_content, product, quantity = 0):
+    if product in fridge_content.keys():
+        fridge_content[product] = fridge_content[product] + quantity
+        print(f'{quantity} of {product} has been added to the fridge.')
         print(fridge_content)
     else:
-        fridge_content[key] = value
-        print(f'{value} of {key} has been added to the fridge.')
+        fridge_content[product] = quantity
+        print(f'{quantity} of {product} has been added to the fridge.')
         print(fridge_content)
     
     return fridge_content
 
-def remove_product(name):
+def remove_product(fridge_content, name):
     
     if name in fridge_content.keys():
         print(f'Would you like to remove all {name} form the fridge?')
@@ -44,7 +42,7 @@ def remove_product(name):
             print(f'Fridge now has: {fridge_content}')
         elif condition.lower() == 'n':
             print(f'Type amount of {name} you would like to remove')
-            r_product = int(input())
+            r_product = float(input())
             fridge_content[name] = fridge_content[name] - r_product
             print(f'{r_product} {name} has been removed from the fridge')
     else:
@@ -52,14 +50,14 @@ def remove_product(name):
     
     return fridge_content
 
-def check_product(name):
+def check_product(fridge_content, name):
     if name in fridge_content.keys():
         print(f'{name} is in the fridge')
         print(f'There is {fridge_content[name]} of {name} in the fridge')
     else:
         print(f'Product {name} is not in the fridge')
 
-def print_content_fridge():
+def print_content_fridge(fridge_content):
     
     for key, value in fridge_content.items():
         print(f'* {key} : {value}')
@@ -91,7 +89,7 @@ def recepy_create(input_string):
     return recepy
     
 
-def check_recepy(recepy = {}):
+def check_recepy(fridge_content, recepy):
     
     missing_ammount = {}
     recepy_ammount = {}
@@ -118,14 +116,13 @@ def check_recepy(recepy = {}):
             print('Products that are nor enough in the fridge:')
             for key, value in missing_ammount.items():
                 print(f'*** {key}: {value}')
-        else:
-            pass
 
 # Main function
 
-def main(run = True):
+def main(fridge_content):
 
-    while run == True:
+    while True:
+
 
         print("Yellow Submerged Fridge")
         print("0: Exit")
@@ -137,35 +134,36 @@ def main(run = True):
         print("6: Recepy check")
         choice = input("Choice: ")
         if choice == "0":
-            run == False
             break
         if choice == '1':
-            key = input('What product would you like to add?: ')
-            value = int(input('Ammount of product you want to add: '))
-            add_product(key, value)
+            product = input('What product would you like to add?: ')
+            quantity = float(input('Ammount of product you want to add: '))
+            fridge_content = add_product(fridge_content, product, quantity)
         if choice == '2':
             name = input('What product would you like to remove?: ')
-            remove_product(name)
+            fridge_content = remove_product(fridge_content, name)
         if choice == '3':
             name = input('What product you are looking for?')
-            check_product(name)
+            check_product(fridge_content, name)
         if choice == '4':
-            print_content_fridge()
+            print_content_fridge(fridge_content)
         if choice == '5':
-            recepy = input('Please write items needed for recepy: ')
-            recepy_create(recepy)
+            recepy_input = input('Please write items needed for recepy: ')
+            recepy = recepy_create(recepy_input)
         if choice == '6':
-            check_recepy()
+            check_recepy(fridge_content, recepy)
         
 
 # check test for the fridge
 
+fridge_content = {}
+print(fridge_content)
 
-add_product('pienas', 1.5)
-add_product('pienas', 2.3)
-add_product('pomidoras', 7.58)
-add_product('kiausiniai', 50)
-check_product('pienas')
-print_content_fridge()
+fridge_content = add_product(fridge_content, 'pienas', 1.5)
+fridge_content = add_product(fridge_content, 'pienas', 2.3)
+fridge_content = add_product(fridge_content, 'pomidoras', 7.58)
+fridge_content = add_product(fridge_content, 'kiausiniai', 50)
+check_product(fridge_content, 'pienas')
+print_content_fridge(fridge_content)
 
-main()
+main(fridge_content)
