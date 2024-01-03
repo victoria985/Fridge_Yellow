@@ -86,8 +86,33 @@ def recepy_create(input_string):
     
 
 def check_recepy(fridge_content, recepy):
-    pass
-
+    
+    for key, value in recepy.items():
+        if key in fridge_content:
+            if recepy[key] <= fridge_content[key]:
+                missing_ammount = {}
+                missing_ammount[key] = recepy[key] - fridge_content[key]
+            else:
+                recepy_ammount = {}
+                recepy_ammount[key] = recepy[key]
+        else:
+            missing_items = []
+            missing_items.append(key)
+    
+    if missing_ammount == {} and missing_items == []:
+        print('Recepy has all ingreadients in the fridge')
+        return recepy_ammount
+    else:
+        if missing_items != []:
+            print('Products that are not in the fridge:')
+            for i in missing_items:
+                print(f'*** {i}')
+        if missing_ammount != {}:
+            print('Products that are nor enough in the fridge:')
+            for key, value in missing_ammount.items():
+                print(f'*** {key}: {value}')
+        else:
+            pass
 
 # Main function
 
@@ -121,11 +146,6 @@ def main(run = True):
         if choice == '5':
             recepy = input('Please write items needed for recepy: ')
             recepy_create(recepy)
-
-
-
-
-        
         
 
 # check test for the fridge
