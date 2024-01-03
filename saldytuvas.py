@@ -22,9 +22,14 @@ BONUS:
 fridge_content = {}
 
 def add_product(key, value = 0):
-
-    fridge_content[key] = value
-    print(fridge_content)
+    if key in fridge_content.keys():
+        fridge_content[key] = fridge_content[key] + value
+        print(f'{value} of {key} has been added to the fridge.')
+        print(fridge_content)
+    else:
+        fridge_content[key] = value
+        print(f'{value} of {key} has been added to the fridge.')
+        print(fridge_content)
 
 def remove_product(name):
     
@@ -33,7 +38,7 @@ def remove_product(name):
         print(f'Item {name} has been removed from the fridge')
         print(f'Fridge now has: {fridge_content}')
     else:
-        print('Item has not been found in the fridge, please try again')
+        print('Item has not been found in the fridge, maybe you have already removed it from the fridge')
 
 def check_product(name):
     if name in fridge_content.keys():
@@ -63,22 +68,32 @@ def recepy_fail():
 
 def main():
     while True:
-        print("---[ Tasks ]---")
+        print("Yellow Submerged Fridge")
         print("0: Exit")
-        print("1: Print all tasks")
-        print("11: Print only undone tasks")
+        print("1: Add to the fridge")
+        print("2: Remove from the fridge")
         print("2: Add a task")
         print('3: Mark task done/undone')
         print("4: Remove a task")
         choice = input("Choice: ")
         if choice == "0":
             break
+        if choice == '1':
+            key = input('What product would you like to add?: ')
+            value = input('Ammount of product you want to add: ')
+            add_product(key, value)
+        if choice == '2':
+            name = input('What product would you like to remove?: ')
+            remove_product(name)
+
         
         
 
 # check test for the fridge
 
+
 add_product('pienas', 1.5)
+add_product('pienas', 2.3)
 add_product('pomidoras', 7.58)
 add_product('kiausiniai', 50)
 check_product('pienas')
