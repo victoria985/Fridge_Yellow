@@ -153,7 +153,7 @@ def main(fridge_content, recepy):
         if choice == '7':
             fridge_content = {}
             recepy = {}
-            print('\033[91m' + '+++ fridge has been cleansed +++' + '\033[0m')
+            print('\033[91m' + '+++ fridge has been clensed +++' + '\033[0m')
         if choice == 'test':
             program_test()
 
