@@ -4,11 +4,11 @@ def add_product(fridge_content, product, quantity = 0):
     if product in fridge_content.keys():
         fridge_content[product] = fridge_content[product] + quantity
         print(f'{quantity} of {product} has been added to the fridge.')
-        print(fridge_content)
+        print_content_fridge(fridge_content)
     else:
         fridge_content[product] = quantity
         print(f'{quantity} of {product} has been added to the fridge.')
-        print(fridge_content)
+        print_content_fridge(fridge_content)
     
     return fridge_content
 
@@ -128,26 +128,32 @@ def main(fridge_content):
         print("4: Show conntent of the fridge")
         print("5: Recepy creation")
         print("6: Recepy check")
+        print("7: Clense fridge")
         choice = input("Choice: ")
         if choice == "0":
             break
         if choice == '1':
-            product = input('What product would you like to add?: ')
+            product = input('What product would you like to add?: ').lower()
             quantity = float(input('Ammount of product you want to add: '))
             fridge_content = add_product(fridge_content, product, quantity)
         if choice == '2':
-            name = input('What product would you like to remove?: ')
+            name = input('What product would you like to remove?: ').lower()
             fridge_content = remove_product(fridge_content, name)
         if choice == '3':
-            name = input('What product you are looking for?')
+            name = input('What product you are looking for?').lower()
             check_product(fridge_content, name)
         if choice == '4':
             print_content_fridge(fridge_content)
         if choice == '5':
-            recepy_input = input('Please write items needed for recepy: ')
+            recepy_input = input('Please write items needed for recepy: ').lower()
             recepy = recepy_create(recepy_input)
         if choice == '6':
             check_recepy(fridge_content, recepy)
+        if choice == '7':
+            fridge_content = {}
+            recepe = {}
+            recepy_pass ={}
+            print('\033[91m' + '+++ fridge has been cleansed +++' + '\033[0m')
         if choice == 'test':
             program_test()
 
