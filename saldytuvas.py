@@ -169,89 +169,90 @@ def main(fridge_content):
         if choice == '6':
             check_recepy(fridge_content, recepy)
         if choice == 'test':
-            program_test(fridge_content)
+            program_test()
 
-def program_test(fridge_content):
+def program_test():
     
-    fridge_content ={}
-    recepy = {}
-    recepy_pass = {}
+    fridge_content_test ={}
+    recepy_test = {}
+    recepy_pass_test = {}
 
     check = 0
-    fridge_content = add_product(fridge_content, 'pienas', 1.5)
+    fridge_content_test = add_product(fridge_content_test, 'pienas', 1.5)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    fridge_content = add_product(fridge_content, 'pienas', 2.3)
+    time.sleep(1)
+    fridge_content_test = add_product(fridge_content_test, 'pienas', 2.3)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    fridge_content = add_product(fridge_content, 'batonas', 5)
+    time.sleep(1)
+    fridge_content_test = add_product(fridge_content_test, 'batonas', 5)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    fridge_content = add_product(fridge_content, 'suris', 15)
+    time.sleep(1)
+    fridge_content_test = add_product(fridge_content_test, 'suris', 15)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    fridge_content = add_product(fridge_content, 'pomidoras', 7.58)
+    time.sleep(1)
+    fridge_content_test = add_product(fridge_content_test, 'pomidoras', 7.58)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    fridge_content = add_product(fridge_content, 'kiausiniai', 50)
+    time.sleep(1)
+    fridge_content_test = add_product(fridge_content_test, 'kiausiniai', 50)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    fridge_content = remove_product(fridge_content, 'batonas', 3, 'n')
+    time.sleep(1)
+    fridge_content_test = remove_product(fridge_content_test, 'batonas', 3, 'n')
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    fridge_content = remove_product(fridge_content, 'suris', 0, 'y')
+    time.sleep(1)
+    fridge_content_test = remove_product(fridge_content_test, 'suris', 0, 'y')
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    check_product(fridge_content, 'pienas')
+    time.sleep(1)
+    check_product(fridge_content_test, 'pienas')
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    recepy = recepy_create("milk:50, pienas:2, pomidoras:3, batonas:20")
+    time.sleep(1)
+    recepy_test = recepy_create("milk:50, pienas:2, pomidoras:3, batonas:20")
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    check_recepy(fridge_content, recepy)
+    time.sleep(1)
+    check_recepy(fridge_content_test, recepy_test)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    fridge_content = add_product(fridge_content, 'milk', 50)
+    time.sleep(1)
+    fridge_content_test = add_product(fridge_content_test, 'milk', 50)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    fridge_content = add_product(fridge_content, 'batonas', 20)
+    time.sleep(1)
+    fridge_content_test = add_product(fridge_content_test, 'batonas', 20)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    check_recepy(fridge_content, recepy)
+    time.sleep(1)
+    check_recepy(fridge_content_test, recepy_test)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
-    time.sleep(1.5)
-    print_content_fridge(fridge_content)
+    time.sleep(1)
+    print_content_fridge(fridge_content_test)
     print('PASS')
     check += 1
     print(f'\033[32mPassed tests: {check}/15\033[0m')
+
 
 
 
