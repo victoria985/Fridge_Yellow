@@ -1,5 +1,5 @@
+<code style="color : gold">===[ Geltonas Šaldytuvas ]===</code>
 
-===[ Geltonas Šaldytuvas ]===
 
 Šaldytuvas yra pythono programa, kuri veikia terminale:
 
