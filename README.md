@@ -1,5 +1,5 @@
+$${\color{yellow}Šaldytuvas}$$
 
-===[ Geltonas Šaldytuvas ]===
 
 Šaldytuvas yra pythono programa, kuri veikia terminale:
 
