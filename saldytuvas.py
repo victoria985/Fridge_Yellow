@@ -30,11 +30,12 @@ def remove_product(fridge_content, name, quantity = 0, condition = ''):
             if quantity == 0:
                 quantity = float(input())
             else:
-                fridge_content[name] = fridge_content[name] - quantity
-                if fridge_content[name] <= 0:
-                    del fridge_content[name]
-                else:
-                    pass
+                pass
+            fridge_content[name] = fridge_content[name] - quantity
+            if fridge_content[name] <= 0:
+                del fridge_content[name]
+            else:
+                pass
             print(f'{quantity} {name} has been removed from the fridge')
             print_content_fridge(fridge_content)
     else:
