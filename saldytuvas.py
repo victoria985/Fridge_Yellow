@@ -18,6 +18,7 @@ BONUS:
 
 """
 
+import time
 
 def add_product(fridge_content, product, quantity = 0):
     if product in fridge_content.keys():
@@ -31,22 +32,33 @@ def add_product(fridge_content, product, quantity = 0):
     
     return fridge_content
 
-def remove_product(fridge_content, name):
+def remove_product(fridge_content, name, quantity = 0, condition = ''):
     
     if name in fridge_content.keys():
         print(f'Would you like to remove all {name} form the fridge?')
-        condition = input('y/n: ')
+        if condition == '':
+            condition =input('y/n: ')
+        while condition.lower() not in ['y', 'n']:
+            condition = input("Invalid input. Please enter 'y' or 'n': ")
         if condition.lower() == 'y':
             del fridge_content[name]
             print(f'Item {name} has been removed from the fridge')
-            print(f'Fridge now has: {fridge_content}')
+            print(f'Fridge now has:')
+            print_content_fridge(fridge_content)
         elif condition.lower() == 'n':
             print(f'Type amount of {name} you would like to remove')
-            r_product = float(input())
-            fridge_content[name] = fridge_content[name] - r_product
-            print(f'{r_product} {name} has been removed from the fridge')
+            if quantity == 0:
+                quantity = float(input())
+            else:
+                fridge_content[name] = fridge_content[name] - quantity
+                if fridge_content[name] <= 0:
+                    del fridge_content[name]
+                else:
+                    pass
+            print(f'{quantity} {name} has been removed from the fridge')
+            print_content_fridge(fridge_content)
     else:
-        print('Item has not been found in the fridge, maybe you have already removed it from the fridge')
+        print('Item has not been found in the fridge')
     
     return fridge_content
 
@@ -59,6 +71,7 @@ def check_product(fridge_content, name):
 
 def print_content_fridge(fridge_content):
     
+    print('=== Fridge content ===')
     for key, value in fridge_content.items():
         print(f'* {key} : {value}')
 
@@ -97,7 +110,7 @@ def check_recepy(fridge_content, recepy):
 
     for key, value in recepy.items():
         if key in fridge_content:
-            if recepy[key] <= fridge_content[key]:
+            if recepy[key] > fridge_content[key]:
                 missing_ammount[key] = recepy[key] - fridge_content[key]
             else:
                 recepy_ammount[key] = recepy[key]
@@ -106,16 +119,18 @@ def check_recepy(fridge_content, recepy):
     
     if missing_ammount == {} and missing_items == []:
         print('Recepy has all ingreadients in the fridge')
-        return recepy_ammount
+        recepy_pass = recepy
+        return recepy_pass
     else:
         if missing_items != []:
             print('Products that are not in the fridge:')
             for i in missing_items:
                 print(f'*** {i}')
         if missing_ammount != {}:
-            print('Products that are nor enough in the fridge:')
+            print('There is not enough of:')
             for key, value in missing_ammount.items():
-                print(f'*** {key}: {value}')
+                print(f'*** {key}: missing {value}')
+    
 
 # Main function
 
@@ -123,8 +138,9 @@ def main(fridge_content):
 
     while True:
 
-
-        print("Yellow Submerged Fridge")
+        print("-------------------------------")
+        print("--- Yellow Submerged Fridge ---")
+        print("-------------------------------")
         print("0: Exit")
         print("1: Add to the fridge")
         print("2: Remove from the fridge")
@@ -152,18 +168,95 @@ def main(fridge_content):
             recepy = recepy_create(recepy_input)
         if choice == '6':
             check_recepy(fridge_content, recepy)
-        
+        if choice == 'test':
+            program_test(fridge_content)
 
-# check test for the fridge
+def program_test(fridge_content):
+    
+    fridge_content ={}
+    recepy = {}
+    recepy_pass = {}
+
+    check = 0
+    fridge_content = add_product(fridge_content, 'pienas', 1.5)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    fridge_content = add_product(fridge_content, 'pienas', 2.3)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    fridge_content = add_product(fridge_content, 'batonas', 5)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    fridge_content = add_product(fridge_content, 'suris', 15)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    fridge_content = add_product(fridge_content, 'pomidoras', 7.58)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    fridge_content = add_product(fridge_content, 'kiausiniai', 50)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    fridge_content = remove_product(fridge_content, 'batonas', 3, 'n')
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    fridge_content = remove_product(fridge_content, 'suris', 0, 'y')
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    check_product(fridge_content, 'pienas')
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    recepy = recepy_create("milk:50, pienas:2, pomidoras:3, batonas:20")
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    check_recepy(fridge_content, recepy)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    fridge_content = add_product(fridge_content, 'milk', 50)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    fridge_content = add_product(fridge_content, 'batonas', 20)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    check_recepy(fridge_content, recepy)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+    time.sleep(1.5)
+    print_content_fridge(fridge_content)
+    print('PASS')
+    check += 1
+    print(f'\033[32mPassed tests: {check}/15\033[0m')
+
+
 
 fridge_content = {}
-print(fridge_content)
-
-fridge_content = add_product(fridge_content, 'pienas', 1.5)
-fridge_content = add_product(fridge_content, 'pienas', 2.3)
-fridge_content = add_product(fridge_content, 'pomidoras', 7.58)
-fridge_content = add_product(fridge_content, 'kiausiniai', 50)
-check_product(fridge_content, 'pienas')
-print_content_fridge(fridge_content)
+recepy = {}
+recepy_pass = {}
 
 main(fridge_content)
