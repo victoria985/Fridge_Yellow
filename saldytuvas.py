@@ -114,7 +114,7 @@ def check_recepy(fridge_content, recepy):
 
 # Main function
 
-def main(fridge_content):
+def main(fridge_content, recepy, recepy_pass):
 
     while True:
 
@@ -151,7 +151,7 @@ def main(fridge_content):
             check_recepy(fridge_content, recepy)
         if choice == '7':
             fridge_content = {}
-            recepe = {}
+            recepy = {}
             recepy_pass ={}
             print('\033[91m' + '+++ fridge has been cleansed +++' + '\033[0m')
         if choice == 'test':
