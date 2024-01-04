@@ -19,9 +19,9 @@ Pagrindinės Šaldytuvo funkcijos:
 
 Recepto kūrimas:
 
-*  Galima kurti recepta pagal kurį yra tikrinama šaldytuvo turinys.
-** Recepto įvedimas vyksta viena eilute, kuri po to išdalinama. Pva.: Sūris: 0.5, Pomidoras: 2, Duona: 0.4
-** Jeigu receptas neišeina, išvardina kiek ir kokių produktų trūksta.
+* Galima kurti recepta pagal kurį yra tikrinama šaldytuvo turinys.
+* Recepto įvedimas vyksta viena eilute, kuri po to išdalinama. Pva.: Sūris: 0.5, Pomidoras: 2, Duona: 0.4
+* Jeigu receptas neišeina, išvardina kiek ir kokių produktų trūksta.
 
 Bonus:
 
