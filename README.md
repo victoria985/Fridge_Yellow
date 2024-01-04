@@ -1,4 +1,4 @@
-<code style="color : gold">===[ Geltonas Šaldytuvas ]===</code>
+$${\color{yellow}Šaldytuvas}$$
 
 
 Šaldytuvas yra pythono programa, kuri veikia terminale:
