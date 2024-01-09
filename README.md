@@ -1,3 +1,16 @@
+Naujas protingas geltonas šaldytuvas (alpha versija 0.1)
+
+Pagrindinės šaldytuvo užduotys:
+
+1) Turėti atmintyje userio informacija, ty, user_name, pin_kodas, dietiniai_reikalavimai, biudžetas.
+2) Tvarkyti šaldytuvo turini, ty, sudelioti produktus į šaldytuvą ir šaldymo kamera, pagal laikymo reikalavimus, perdėti produktus tarp šaldymo kameros ir paprastos kameros, sekti galiojimus tiek paprastoje tiek šaldymo kameroje
+3) Struktūringai pateikti šaldytuvo turinį pagal kategorijas, kategorijų apibrėžimai (matavimo vienetai, laikymo salygos)
+4) Receptų kūrimas, jų laikymas pagal pavadinimą, spausdinimas receptų su galimu jų aprašymu, receptų trinimas, automatinis gaminimo būklė (kai yra išimami arba visi produktai arba po vieną, bonusas jeigu pagal receptūra)
+5) Valymo funkcija
+6) Pirkinių sarašo sudarymas pagal receptūras
+7) Dietinių reikalavimų įspėjimai
+8) Temperatūros reguliavimas
+
 $${\color{yellow}Šaldytuvas}$$
 
 
