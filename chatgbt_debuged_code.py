@@ -112,8 +112,10 @@ class Smart_Fridge:
     def extract_fridge_content(self):
         file_name = 'fridge_content.json'
         with open(file_name, 'r') as file:
+            print('hello')
             data = json.load(file)
-            return data
+            print(data)
+        return data
 
     def _update_json_file(self):
         file_name = 'fridge_content.json'
@@ -190,14 +192,23 @@ fridge_content = {
 
 if __name__ == "__main__":
     fridge = Smart_Fridge("", "", 5, fridge_content)
-    fridge.main()
-    print(fridge)
+    # fridge.main()
+    # print(fridge)
 
-    fridge.create_fridge_content_file()
-    fridge_data = fridge.extract_fridge_content()
-    product_to_add = Product('butter', quantity=2, unit_of_measurement='kg')
-    product_to_remove = Product('milk', quantity=1, unit_of_measurement='L')
+    # fridge.create_fridge_content_file()
+    # fridge_data = fridge.extract_fridge_content()
+    # product_to_add = Product('butter', quantity=2, unit_of_measurement='kg')
+    # product_to_remove = Product('milk', quantity=1, unit_of_measurement='L')
 
-    fridge.add_product('dairy', product_to_add)
-    fridge.remove_product('dairy', product_to_remove)
-    fridge.print_contents()
+    # fridge.add_product('dairy', product_to_add)
+    # fridge.remove_product('dairy', product_to_remove)
+    # fridge.print_contents()
+    print(fridge.extract_fridge_content())
+
+
+
+
+# produkta -> idejimas -> ieskojimas -> remove
+    
+# is failo sjon -> 
+

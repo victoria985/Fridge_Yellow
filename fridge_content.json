@@ -1,0 +1,72 @@
+{
+    "proteins": [
+        {
+            "name": "chicken",
+            "quantity": 2
+        },
+        {
+            "name": "beef",
+            "quantity": 3
+        },
+        {
+            "name": "tofu",
+            "quantity": 4
+        }
+    ],
+    "dairy": [
+        {
+            "name": "milk",
+            "quantity": 1
+        },
+        {
+            "name": "cheese",
+            "quantity": 2
+        },
+        {
+            "name": "yogurt",
+            "quantity": 3
+        }
+    ],
+    "starch": [
+        {
+            "name": "rice",
+            "quantity": 2
+        },
+        {
+            "name": "pasta",
+            "quantity": 3
+        },
+        {
+            "name": "potato",
+            "quantity": 4
+        }
+    ],
+    "fruits/vegetables": [
+        {
+            "name": "apple",
+            "quantity": 5
+        },
+        {
+            "name": "broccoli",
+            "quantity": 2
+        },
+        {
+            "name": "banana",
+            "quantity": 3
+        }
+    ],
+    "fats": [
+        {
+            "name": "avocado",
+            "quantity": 2
+        },
+        {
+            "name": "olive oil",
+            "quantity": 3
+        },
+        {
+            "name": "nuts",
+            "quantity": 4
+        }
+    ]
+}
