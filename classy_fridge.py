@@ -1,19 +1,11 @@
 import os
 import json
 
-class Category:
-
-    def __init__(self, alergens: list = []):
-        self.alergens = alergens
-    
-    def __str__(self):
-        return f"{self.alergens}"
-    
-    def print_alergens(self):
-        print(f"{Category} alergens are {self.alergens}")
 
 class Product:
-    def __init__(self, category:Category, name: str, unit_of_measurement: str = 'unit', quantity: float = 0 , **kwargs) -> None:
+
+    # Defining Class
+    def __init__(self, category, name: str, unit_of_measurement: str = 'unit', quantity: float = 0 , **kwargs) -> None:
         self.category = category
         self.name = name
         self.unit_of_measurement = unit_of_measurement  # options: kg, g, L, ml
@@ -21,13 +13,16 @@ class Product:
         for key, value in kwargs.items():
             setattr(self, key, value)
 
+    # Defininf str output
     def __str__(self) -> str:
         return f"{self.category}: {self.name}: {self.quantity} {self.unit_of_measurement}"
 
+    # Defininf repr output
     def __repr__(self) -> str:
         return f"({self.category}, {self.name}, {self.quantity}, {self.unit_of_measurement})"
 
 
+# Class not functional for now
 class Recipe:
     ingredients = []
     instructions = ""
@@ -68,20 +63,39 @@ class Smart_Fridge:
         return product.quantity - quantity
 
     # Add product function
-    def add_product(self, category: Category, name: str, quantity: float):
-
-        product_id, product = self.check_product(name) # nenaudojamus kintamuosius galima vadinti tiesiog _
-        if product is not None:
-            product.quantity += quantity
+    def add_product(self, category, item, quantity):
+        if category in self.fridge_content:
+            self.fridge_content[category].append((item, quantity))
         else:
-            self.contents.append(Product(name, quantity))
-    
-    def remove_product(self, name: str, quantity: float):
-        pass
+            self.fridge_content[category] = [(item, quantity)]
+        
+        self._update_json_file()  # Update JSON file after adding product
 
+    # Remove product function
+    def remove_product(self, category: str, item: str, quantity: float = 0):
+        if category in self.fridge_content:
+            updated_items = []
+            for product_name, product_quantity in self.fridge_content[category]:
+                if product_name == item:
+                    if quantity >= product_quantity:
+                        continue  # If quantity to remove is greater or equal to current quantity, remove the entire item
+                    else:
+                        updated_items.append((product_name, product_quantity - quantity))
+                else:
+                    updated_items.append((product_name, product_quantity))
+            self.fridge_content[category] = updated_items
+
+        self._update_json_file()  # Update json file after removing product
+
+    # Print fridge content (not working for now)
     def print_contents(self):
-        print(Smart_Fridge.extract_fridge_content)
+        content = self.extract_fridge_content()
+        for category in content.keys():
+            print(f'{category}:')
+            for a, b in content.values():
+                print(f'{a}: {b}')
 
+    # Recepy check function (not working)
     def check_recipe(self, recipe: Recipe):
         pass
 
@@ -102,13 +116,15 @@ class Smart_Fridge:
         with open('user_data.txt', 'w') as file:
             file.write(f"user_name = {self.user_name}\n")
             file.write(f"pin_code = {self.__pin}")
-    
+
+    # Creation of json file
     def create_fridge_content_file(self):
         file_name = 'fridge_content.json'
 
         with open(file_name, 'w') as file:
             json.dump(self.fridge_content, file, indent=4)
 
+    # Extraction of json file
     def extract_fridge_content(self):
         file_name = 'fridge_content.json'
 
@@ -116,6 +132,13 @@ class Smart_Fridge:
             data = json.load(file)
             return data
 
+    # Update json file
+    def _update_json_file(self):
+        file_name = 'fridge_content.json'
+
+        with open(file_name, 'w') as file:
+            json.dump(self.fridge_content, file, indent=4)
+    
     # Read and extract user data from storage
     def read_user_data_from_file(self):
         user_name = None
@@ -159,8 +182,7 @@ class Smart_Fridge:
             self.write_user_data_to_file()
             print("User data has been saved to user_data.txt")
 
-
-items_dict = {
+fridge_content = {
     'proteins': [
         ('chicken', 2),
         ('beef', 3),
@@ -189,11 +211,16 @@ items_dict = {
 }
 
 if __name__ == "__main__":
-    fridge = Smart_Fridge("", "", 5, items_dict)
+    fridge = Smart_Fridge("", "", 5, fridge_content)
     fridge.main()
     print(fridge)
 
 
     fridge.create_fridge_content_file()
     fridge_data = fridge.extract_fridge_content()
+    fridge.add_product('dairy', 'butter', 2)
+    fridge.add_product('proteins', 'eggs', 50)
+    fridge.remove_product('proteins', 'eggs', 20)
+    fridge_data = fridge.extract_fridge_content()
     print(fridge_data)
+ 
