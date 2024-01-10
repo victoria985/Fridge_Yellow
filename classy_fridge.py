@@ -5,7 +5,7 @@ import json
 class Product:
 
     # Defining Class
-    def __init__(self, name, quantity:float = 0, unit_of_measurement: str = 'unit', category: str = '0', **kwargs):
+    def __init__(self, name, quantity:float = 0, unit_of_measurement: str = 'unit', category: str = '', **kwargs):
         self.name = name
         self.quantity = quantity
         self.unit_of_measurement = unit_of_measurement
@@ -24,17 +24,24 @@ class Product:
 
 # Class not functional for now
 class Recipe:
-    ingredients = []
-    instructions = ""
+
+    def __init__(self, ingredients:dict = {}, instruction:str = ''):
+        self.ingredients = ingredients
+        self.instruction = instruction
+    
+    def check_ingredients(self, product:Product):
+        return product.name in self.ingredients.keys()
 
     def add_ingredient(self, product: Product):
-        self.ingredients.append(product)
+        self.ingredients[product.name] = [{product.quantity}, product.unit_of_measurement]
 
-    def change_ingredient_quantity(self, ingredient_id: int, new_quantity: float):
-        self.ingredients[ingredient_id].quantity = new_quantity
+    def change_ingredient_quantity(self, product:Product, new_quantity):
+        if self.check_ingredients(product) is True:
+            self.ingredients[product.name][0] = new_quantity
 
-    def remove_ingredient(self, ingredient_id: int):
-        self.ingredients.pop(ingredient_id)
+    def remove_ingredient(self, product):
+        if self.check_ingredients(product) is True:
+            del self.ingredients[product.name]
 
 
 class SmartFridge:
@@ -56,8 +63,11 @@ class SmartFridge:
         return product.name in self.contents.keys()
         
     # Products quantity check function neveikia
-    def check_product_quantity(self, product: Product, quantity: float):
-        return product.quantity - quantity
+    def check_product_quantity(self, product: Product):
+        if self.check_product(product) is True:
+            return self.contents[product.name][0]
+        else:
+            print(f'{product.name} has not been found in the fridge')
 
     # Add product function
     def add_product(self, product:Product):
@@ -84,7 +94,20 @@ class SmartFridge:
             
     # Print fridge content
     def print_contents(self):
-        pass
+        printable_content = {}
+        for product, values in self.contents.items():
+            category = values[2]
+            product_info = f"{product}: {values[0]} {values[1]}"
+            
+            if category not in printable_content:
+                printable_content[category] = [product_info]
+            else:
+                printable_content[category].append(product_info)
+
+        for category, products in printable_content.items():
+            print(f"{category}:")
+            for product_info in products:
+                print(f"  {product_info}")
 
 
     # Recepy check function (not working)
@@ -173,6 +196,10 @@ class SmartFridge:
             self.set_attributes_from_input_user()
             self.write_user_data_to_file()
             print("User data has been saved to user_data.txt")
+            if os.path.isfile('fridge_content.json'):
+                self.contents = self.extract_fridge_content()
+            else:
+                self.create_fridge_content_file()
 
 
 # Test parameters
@@ -195,6 +222,14 @@ print(fridge.contents)
 remove_all_milk = Product('milk')
 fridge.remove_product(remove_all_milk)
 print(fridge.contents)
+fridge.contents = {
+    'apple': [5, 'pieces', 'fruits'],
+    'banana': [2, 'pieces', 'fruits'],
+    'milk': [1, 'liter', 'dairy'],
+    'cheese': [250, 'grams', 'dairy'],
+    'bread': [1, 'loaf', 'bakery'],
+    'lettuce': [1, 'head', 'vegetables'],
+}
 fridge.print_contents()
 
 # if __name__ == "__main__":
