@@ -5,20 +5,21 @@ import json
 class Product:
 
     # Defining Class
-    def __init__(self, name: str, unit_of_measurement: str = 'unit', quantity: float = 0 , **kwargs) -> None:
+    def __init__(self, name, quantity:float = 0, unit_of_measurement: str = 'unit', category: str = '0', **kwargs):
         self.name = name
-        self.unit_of_measurement = unit_of_measurement  # options: kg, g, L, ml
         self.quantity = quantity
+        self.unit_of_measurement = unit_of_measurement
+        self.category = category
         for key, value in kwargs.items():
             setattr(self, key, value)
 
     # Defininf str output
     def __str__(self) -> str:
-        return f"{self.category}: {self.name}: {self.quantity} {self.unit_of_measurement}"
+        return f"{self.category}: {self.name}- {self.quantity} {self.unit_of_measurement}"
 
     # Defininf repr output
     def __repr__(self) -> str:
-        return f"({self.category}, {self.name}, {self.quantity}, {self.unit_of_measurement})"
+        return f"'{self.name}': ({self.quantity}, '{self.unit_of_measurement}, '{self.category}')"
 
 
 # Class not functional for now
@@ -36,14 +37,14 @@ class Recipe:
         self.ingredients.pop(ingredient_id)
 
 
-class SmartFridge: # no underscore
+class SmartFridge:
 
     # Defining class
-    def __init__(self, user_name: str, pin_code: str, temperature: int = 5, content: dict = {}):
+    def __init__(self, user_name: str, pin_code: str, temperature: int = 5, contents: dict = {}):
         self.user_name = user_name
         self.__pin = pin_code
         self.__temperature = temperature
-        self.content = content
+        self.contents = contents
 
 
     # String representation of a class for checks
@@ -51,51 +52,39 @@ class SmartFridge: # no underscore
         return f'{self.user_name}: {self.__pin}: {self.__temperature}: {self.content}'
     
     # Products check function neveikianti pakoklas
-    def check_product(self, product_name: str) -> (int, Product):
-        for product_id, product in enumerate(self.content):
-            if product['name'] == product_name:
-                return product_id, product
-        return None, None
-    
+    def check_product(self, product:Product):
+        return product.name in self.contents.keys()
+        
     # Products quantity check function neveikia
     def check_product_quantity(self, product: Product, quantity: float):
         return product.quantity - quantity
 
     # Add product function
-    def add_product(self, name:str, quantity:float):
-        product_id, product = self.check_product(name) # nenaudojamus kintamuosius galima vadinti tiesiog _
-        if product is not None:
-            product.quantity += quantity
+    def add_product(self, product:Product):
+        if not self.check_product(product):
+            self.contents[product.name] = [product.quantity, product.unit_of_measurement, product.category]
         else:
-            self.contents.append(Product(name, quantity))
+            new_quantity = self.contents[product.name][0] + product.quantity
+            self.contents[product.name][0] = new_quantity
+    
+    # Removing product
+    def remove_product(self, product):
+        if self.check_product(product):
+            current_quantity = self.contents[product.name][0]
 
-    # Remove product function
-    def remove_product(self, category, product: Product, quantity=None):
-        if category in self.content:
-            if any(prod['name'] == product.name for prod in self.content[category]):
-                updated_items = []
-                for prod in self.content[category]:
-                    if prod['name'] == product.name:
-                        if quantity is None or quantity >= prod['quantity']:
-                            continue
-                        else:
-                            updated_items.append({'name': prod['name'], 'quantity': prod['quantity'] - quantity, 'unit_of_measurement': prod['unit_of_measurement']})
-                    else:
-                        updated_items.append(prod)
-                self.content[category] = updated_items
-                self._update_json_file()
-                if quantity is None:
-                    print(f"Removed '{product.name}' entirely from '{category}'")
-                else:
-                    print(f"Removed {quantity} {'units' if quantity > 1 else 'unit'} of '{product.name}' from '{category}'")
+            if product.quantity <= 0:
+                del self.contents[product.name]
+            elif product.quantity >= current_quantity:
+                del self.contents[product.name]
             else:
-                print(f"Product '{product.name}' does not exist in '{category}'. Removal failed.")
+                new_quantity = current_quantity - product.quantity
+                self.contents[product.name][0] = new_quantity
         else:
-            print(f"Category '{category}' does not exist. Removal failed.")
-
+            print(f"Product '{product.name}' not found in inventory.")
+            
     # Print fridge content
     def print_contents(self):
-        print(self.content)
+        pass
 
 
     # Recepy check function (not working)
@@ -188,51 +177,43 @@ class SmartFridge: # no underscore
 
 # Test parameters
 
-fridge_content = {
-    'proteins': [
-        ('chicken', 2),
-        ('beef', 3),
-        ('tofu', 4)
-    ],
-    'dairy': [
-        ('milk', 1),
-        ('cheese', 2),
-        ('yogurt', 3)
-    ],
-    'starch': [
-        ('rice', 2),
-        ('pasta', 3),
-        ('potato', 4)
-    ],
-    'fruits/vegetables': [
-        ('apple', 5),
-        ('broccoli', 2),
-        ('banana', 3)
-    ],
-    'fats': [
-        ('avocado', 2),
-        ('olive oil', 3),
-        ('nuts', 4)
-    ]
-}
+milk = Product('milk', 20, 'l', 'dairy')
+print(milk)
+cheese = Product('cheese', 'Kg', 2, 'dairy' )
+print(cheese)
+fridge = SmartFridge('Evaldas', '2315')
+fridge.add_product(milk)
+print('first milk')
+print(fridge.contents)
+fridge.add_product(milk)
+fridge.add_product(cheese)
+print(fridge.contents)
+remove_milk = Product('milk', 10)
+fridge.remove_product(remove_milk)
+print('milk removal')
+print(fridge.contents)
+remove_all_milk = Product('milk')
+fridge.remove_product(remove_all_milk)
+print(fridge.contents)
+fridge.print_contents()
 
-if __name__ == "__main__":
-    fridge = SmartFridge("", "", 5, fridge_content)
-    fridge.main()
-    print(fridge)
+# if __name__ == "__main__":
+#     fridge = SmartFridge("", "", 5, fridge_content)
+#     fridge.main()
+#     print(fridge)
 
 
-    fridge.create_fridge_content_file()
-    fridge_data = fridge.extract_fridge_content()
-    product_to_add = Product('butter', quantity=2, unit_of_measurement='kg')
-    product_to_remove = Product('milk', quantity=1, unit_of_measurement='L')
+#     fridge.create_fridge_content_file()
+#     fridge_data = fridge.extract_fridge_content()
+#     product_to_add = Product('butter', quantity=2, unit_of_measurement='kg')
+#     product_to_remove = Product('milk', quantity=1, unit_of_measurement='L')
 
-    # Adding product
-    fridge.add_product('dairy', product_to_add)
+#     # Adding product
+#     fridge.add_product('dairy', product_to_add)
 
-    # Removing product
-    fridge.remove_product('dairy', product_to_remove)
-    fridge_data = fridge.extract_fridge_content()
-    fridge.print_contents
-    print(fridge_data)
+#     # Removing product
+#     fridge.remove_product('dairy', product_to_remove)
+#     fridge_data = fridge.extract_fridge_content()
+#     fridge.print_contents
+#     print(fridge_data)
  
