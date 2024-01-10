@@ -5,8 +5,7 @@ import json
 class Product:
 
     # Defining Class
-    def __init__(self, category, name: str, unit_of_measurement: str = 'unit', quantity: float = 0 , **kwargs) -> None:
-        self.category = category
+    def __init__(self, name: str, unit_of_measurement: str = 'unit', quantity: float = 0 , **kwargs) -> None:
         self.name = name
         self.unit_of_measurement = unit_of_measurement  # options: kg, g, L, ml
         self.quantity = quantity
