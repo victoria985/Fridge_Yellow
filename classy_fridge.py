@@ -1,7 +1,7 @@
 import os
 import json
 
-
+# Not functioning
 class Product:
 
     # Defining Class
@@ -50,14 +50,14 @@ class Smart_Fridge:
     def __str__(self):
         return f'{self.user_name}: {self.__pin}: {self.__temperature}: {self.fridge_content}'
     
-    # Products check function
+    # Products check function neveikianti pakoklas
     def check_product(self, product_name: str) -> (int, Product):
         for product_id, product in enumerate(self.contents):
             if product.name == product_name:
                 return product_id, product
         return None, None
     
-    # Products quantity check function
+    # Products quantity check function neveikia
     def check_product_quantity(self, product: Product, quantity: float):
         return product.quantity - quantity
 
@@ -234,4 +234,5 @@ if __name__ == "__main__":
     fridge.remove_product('proteins', 'eggs', 20)
     fridge_data = fridge.extract_fridge_content()
     fridge.print_contents
+    print(fridge_data)
  
