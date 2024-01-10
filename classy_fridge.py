@@ -63,37 +63,49 @@ class Smart_Fridge:
         return product.quantity - quantity
 
     # Add product function
-    def add_product(self, category, item, quantity):
+    def add_product(self, category, item, quantity: float):
         if category in self.fridge_content:
             self.fridge_content[category].append((item, quantity))
         else:
             self.fridge_content[category] = [(item, quantity)]
         
-        self._update_json_file()  # Update JSON file after adding product
+        # Update JSON file after adding product
+        self._update_json_file()
+        # Print statement for adding product
+        print(f"Added {quantity} of '{item}' to '{category}'")
 
     # Remove product function
-    def remove_product(self, category: str, item: str, quantity: float = 0):
+    def remove_product(self, category, item, quantity=None):
         if category in self.fridge_content:
-            updated_items = []
-            for product_name, product_quantity in self.fridge_content[category]:
-                if product_name == item:
-                    if quantity >= product_quantity:
-                        continue  # If quantity to remove is greater or equal to current quantity, remove the entire item
+            if any(product[0] == item for product in self.fridge_content[category]):
+                updated_items = []
+                for product_name, product_quantity in self.fridge_content[category]:
+                    if product_name == item:
+                        if quantity is None or quantity >= product_quantity:
+                            # Remove the entire item if quantity is not given or greater/equal to current quantity
+                            continue
+                        else:
+                            updated_items.append((product_name, product_quantity - quantity))
                     else:
-                        updated_items.append((product_name, product_quantity - quantity))
+                        updated_items.append((product_name, product_quantity))
+                self.fridge_content[category] = updated_items
+                # Update JSON file after removing product
+                self._update_json_file()
+                if quantity is None:
+                    # Print statement for removing entire item
+                    print(f"Removed '{item}' entirely from '{category}'")
                 else:
-                    updated_items.append((product_name, product_quantity))
-            self.fridge_content[category] = updated_items
-
-        self._update_json_file()  # Update json file after removing product
+                    # Print statement for removing product
+                    print(f"Removed {quantity} {'units' if quantity > 1 else 'unit'} of '{item}' from '{category}'")
+            else:
+                print(f"Product '{item}' does not exist in '{category}'. Removal failed.")
+        else:
+            print(f"Category '{category}' does not exist. Removal failed.")
 
     # Print fridge content (not working for now)
     def print_contents(self):
         content = self.extract_fridge_content()
-        for category in content.keys():
-            print(f'{category}:')
-            for a, b in content.values():
-                print(f'{a}: {b}')
+        print(content)
 
     # Recepy check function (not working)
     def check_recipe(self, recipe: Recipe):
@@ -222,5 +234,5 @@ if __name__ == "__main__":
     fridge.add_product('proteins', 'eggs', 50)
     fridge.remove_product('proteins', 'eggs', 20)
     fridge_data = fridge.extract_fridge_content()
-    print(fridge_data)
+    fridge.print_contents
  
