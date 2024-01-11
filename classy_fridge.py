@@ -158,7 +158,7 @@ class SmartFridge:
             print(f'Item \033[91m{key}\033[0m does not exist in the fridge')
 
     def extract_product(self, product_name):
-        if self.check_product(product_name) is True:
+        if product_name in self.contents.keys():
             name = product_name
             quantity = self.contents[product_name][0]
             unit = self.contents[product_name][1]
@@ -335,45 +335,45 @@ class SmartFridge:
 
 
 
-if __name__ == "__main__":
-    fridge = SmartFridge()
-    fridge.start()
-    fridge.main()
+# if __name__ == "__main__":
+#     fridge = SmartFridge()
+#     fridge.start()
+#     fridge.main()
 
-
-#     milk = Product('milk', 20, 'l', 'dairy')
-#     print(milk)
-#     cheese = Product('cheese', 2, 'Kg', 'dairy' )
-#     print(cheese)
-#     fridge.add_product(milk)
-#     print('first milk')
-#     print(fridge.contents)
-#     fridge.add_product(milk)
-#     fridge.add_product(cheese)
-#     print(fridge.contents)
-#     remove_milk = Product('milk', 10)
-#     fridge.remove_product(remove_milk)
-#     print('milk removal')
-#     print(fridge.contents)
-#     remove_all_milk = Product('milk')
-#     fridge.remove_product(remove_all_milk)
-#     print(fridge.contents)
-#     fridge.contents = {
-#         'apple': [5, 'pieces', 'fruits'],
-#         'banana': [2, 'pieces', 'fruits'],
-#         'milk': [1, 'liter', 'dairy'],
-#         'cheese': [250, 'grams', 'dairy'],
-#         'lettuce': [1, 'head', 'vegetables'],
-#     }
-#     fridge.print_contents()
-#     recipy_dict = {
-#         'apple': [5, 'pieces', 'fruits'],
-#         'milk': [1, 'liter', 'dairy'],
-#         'cheese': [500, 'grams', 'dairy'],
-#         'bread': [1, 'loaf', 'bakery'],
-#     }
-#     new_recipe = Recipe(recipy_dict)
-#     print(new_recipe.ingredients)
-#     fridge.check_recipe(new_recipe)
-#     print(fridge.contents)
-#     fridge._update_json_file()
+fridge = SmartFridge()
+milk = Product('milk', 20, 'l', 'dairy')
+print(milk)
+cheese = Product('cheese', 2, 'Kg', 'dairy' )
+print(cheese)
+fridge.add_product(milk)
+print('first milk')
+print(fridge.contents)
+fridge.add_product(milk)
+fridge.add_product(cheese)
+print(fridge.contents)
+remove_milk = Product('milk', 10)
+fridge.remove_product(remove_milk)
+print('milk removal')
+print(fridge.contents)
+remove_all_milk = Product('milk')
+fridge.remove_product(remove_all_milk)
+print(fridge.contents)
+fridge.contents = {
+    'apple': [5, 'pieces', 'fruits'],
+    'banana': [2, 'pieces', 'fruits'],
+    'milk': [1, 'liter', 'dairy'],
+    'cheese': [250, 'grams', 'dairy'],
+    'lettuce': [1, 'head', 'vegetables'],
+}
+fridge.print_contents()
+recipy_dict = {
+    'apple': [5, 'pieces', 'fruits'],
+    'milk': [1, 'liter', 'dairy'],
+    'cheese': [500, 'grams', 'dairy'],
+    'bread': [1, 'loaf', 'bakery'],
+}
+new_recipe = Recipe(recipy_dict)
+print(new_recipe.ingredients)
+fridge.check_recipe(new_recipe)
+print(fridge.contents)
+fridge._update_json_file()
