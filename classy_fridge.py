@@ -29,25 +29,32 @@ class Recipe:
         self.ingredients = ingredients
         self.instruction = instruction
     
+    # ingredient check, used in later functions
     def check_ingredient(self, product: Product):
         return product.name in self.ingredients.keys()
 
+    # ingredients check for recepy, returs modified list for convinience
     def check_ingredients_needed(self):
         ingredients_check = {}
         for key, value in self.ingredients.keys:
             ingredients_check[key] = value
         return ingredients_check
     
+    # add function
     def add_ingredient(self, product: Product):
         self.ingredients[product.name] = [{product.quantity}, product.unit_of_measurement]
 
+    # change value fucntion
     def change_ingredient_quantity(self, product:Product, new_quantity):
         if self.check_ingredient(product) is True:
             self.ingredients[product.name][0] = new_quantity
-
+    
+    # remove ingredient function
     def remove_ingredient(self, product):
         if self.check_ingredient(product) is True:
             del self.ingredients[product.name]
+        else:
+            print(f'You are trying to remove what does not exist in recipe')
 
 
 class SmartFridge:
