@@ -107,13 +107,24 @@ class SmartFridge:
 
     # add product fucntion
     def add_product(self, product: Product):
-        product = self.check_product
-        if product is not None:
-            quantity = input('Product already exist, please enter quantity you would like to add')
-            self.change_quantity(product, quantity)
-        else:
-            self.contents.append(product)
-
+            if self.check_product(product) is False:
+                self.contents.append(product)
+            else:
+                print(f'{product.name} alredy is in the fridge({product.quantity} {product.unit_of_measurement}), please enter quantity you would like to add')
+                quantity = float(input)
+                self.change_quantity(product, quantity)
+        
+    def remove_product(self, product: Product):
+        if self.check_product(product) is True:
+            print(f'{product.name} found.\nPlease choose what do do with it (type [r] for remove completety or enter [quantity] to remove ammount specified)')
+            choice = input
+            if choice == 'r':
+                self.contents.pop(product)
+            else:
+                quantity = float(choice)
+                new_quantity = self.check_product_quantity(product, quantity)
+                product.quantity = new_quantity
+    
     def change_quantity(self, product: Product, quantity:float):
          new_quantity = product.quantity + quantity
          product.quantity = new_quantity
@@ -134,7 +145,7 @@ class SmartFridge:
         for category, products in products_by_category.items():
             print(f"{category}:")
             for product in products:
-                print(f"{product.name} - {product.quantity} {product.unit_of_measure}")
+                print(f"{product.name} - {product.quantity} {product.unit_of_measurement}")
             print()
 
 
