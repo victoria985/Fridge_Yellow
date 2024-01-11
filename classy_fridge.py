@@ -19,7 +19,7 @@ class Product:
 
     # Defininf repr output
     def __repr__(self) -> str:
-        return f"'{self.name}': ({self.quantity}, '{self.unit_of_measurement}, '{self.category}')"
+        return f"'{self.name}': ({self.quantity}, '{self.unit_of_measurement}', '{self.category}')"
 
 
 # Class not functional for now
@@ -36,7 +36,7 @@ class Recipe:
     # ingredients check for recepy, returs modified list for convinience
     def check_ingredients_needed(self):
         ingredients_check = {}
-        for key, value in self.ingredients.keys:
+        for key, value in self.ingredients.keys():
             ingredients_check[key] = value
         return ingredients_check
     
@@ -69,7 +69,7 @@ class SmartFridge:
 
     # String representation of a class for checks
     def __str__(self):
-        return f'{self.user_name}: {self.__pin}: {self.__temperature}: {self.content}'
+        return f'{self.user_name}: {self.__pin}: {self.__temperature}: {self.contents}'
     
     # Products check function neveikianti pakoklas
     def check_product(self, product:Product):
@@ -157,25 +157,27 @@ class SmartFridge:
 
     # Creation of json file
     def create_fridge_content_file(self):
-        file_name = 'fridge_content.json'
+        file_name = 'fridge_contents.json'
 
         with open(file_name, 'w') as file:
-            json.dump(self.content, file, indent=4)
+            print('creating file')
+            json.dump(self.contents, file, indent=4)
 
     # Extraction of json file
     def extract_fridge_content(self):
-        file_name = 'fridge_content.json'
+        file_name = 'fridge_contents.json'
 
         with open(file_name, 'r') as file:
+            print('extracting file')
             data = json.load(file)
             return data
 
     # Update json file
     def _update_json_file(self):
-        file_name = 'fridge_content.json'
+        file_name = 'fridge_contents.json'
 
         with open(file_name, 'w') as file:
-            json.dump(self.content, file, indent=4)
+            json.dump(self.contents, file, indent=4)
     
     # Read and extract user data from storage
     def read_user_data_from_file(self):
@@ -218,12 +220,16 @@ class SmartFridge:
             self.__pin = pin_code
             print(f"Welcome back, {user_name}")
             self.confirm_pin()
+            if os.path.isfile('fridge_contents.json'):
+                self.contents = self.extract_fridge_content()
+            else:
+                self.create_fridge_content_file()
         else:
             print("User data file does not exist.")
             self.set_attributes_from_input_user()
             self.write_user_data_to_file()
             print("User data has been saved to user_data.txt")
-            if os.path.isfile('fridge_content.json'):
+            if os.path.isfile('fridge_contents.json'):
                 self.contents = self.extract_fridge_content()
             else:
                 self.create_fridge_content_file()
@@ -231,59 +237,45 @@ class SmartFridge:
 
 # Test parameters
 
-milk = Product('milk', 20, 'l', 'dairy')
-print(milk)
-cheese = Product('cheese', 2, 'Kg', 'dairy' )
-print(cheese)
-fridge = SmartFridge('Evaldas', '2315')
-fridge.add_product(milk)
-print('first milk')
-print(fridge.contents)
-fridge.add_product(milk)
-fridge.add_product(cheese)
-print(fridge.contents)
-remove_milk = Product('milk', 10)
-fridge.remove_product(remove_milk)
-print('milk removal')
-print(fridge.contents)
-remove_all_milk = Product('milk')
-fridge.remove_product(remove_all_milk)
-print(fridge.contents)
-fridge.contents = {
-    'apple': [5, 'pieces', 'fruits'],
-    'banana': [2, 'pieces', 'fruits'],
-    'milk': [1, 'liter', 'dairy'],
-    'cheese': [250, 'grams', 'dairy'],
-    'lettuce': [1, 'head', 'vegetables'],
-}
-fridge.print_contents()
-recipy_dict = {
-    'apple': [5, 'pieces', 'fruits'],
-    'milk': [1, 'liter', 'dairy'],
-    'cheese': [500, 'grams', 'dairy'],
-    'bread': [1, 'loaf', 'bakery'],
-}
-new_recipe = Recipe(recipy_dict)
-print(new_recipe.ingredients)
-fridge.check_recipe(new_recipe)
-
-# if __name__ == "__main__":
-#     fridge = SmartFridge("", "", 5, fridge_content)
-#     fridge.main()
-#     print(fridge)
+if __name__ == "__main__":
+    fridge = SmartFridge()
+    fridge.main()
 
 
-#     fridge.create_fridge_content_file()
-#     fridge_data = fridge.extract_fridge_content()
-#     product_to_add = Product('butter', quantity=2, unit_of_measurement='kg')
-#     product_to_remove = Product('milk', quantity=1, unit_of_measurement='L')
-
-#     # Adding product
-#     fridge.add_product('dairy', product_to_add)
-
-#     # Removing product
-#     fridge.remove_product('dairy', product_to_remove)
-#     fridge_data = fridge.extract_fridge_content()
-#     fridge.print_contents
-#     print(fridge_data)
+    milk = Product('milk', 20, 'l', 'dairy')
+    print(milk)
+    cheese = Product('cheese', 2, 'Kg', 'dairy' )
+    print(cheese)
+    fridge.add_product(milk)
+    print('first milk')
+    print(fridge.contents)
+    fridge.add_product(milk)
+    fridge.add_product(cheese)
+    print(fridge.contents)
+    remove_milk = Product('milk', 10)
+    fridge.remove_product(remove_milk)
+    print('milk removal')
+    print(fridge.contents)
+    remove_all_milk = Product('milk')
+    fridge.remove_product(remove_all_milk)
+    print(fridge.contents)
+    fridge.contents = {
+        'apple': [5, 'pieces', 'fruits'],
+        'banana': [2, 'pieces', 'fruits'],
+        'milk': [1, 'liter', 'dairy'],
+        'cheese': [250, 'grams', 'dairy'],
+        'lettuce': [1, 'head', 'vegetables'],
+    }
+    fridge.print_contents()
+    recipy_dict = {
+        'apple': [5, 'pieces', 'fruits'],
+        'milk': [1, 'liter', 'dairy'],
+        'cheese': [500, 'grams', 'dairy'],
+        'bread': [1, 'loaf', 'bakery'],
+    }
+    new_recipe = Recipe(recipy_dict)
+    print(new_recipe.ingredients)
+    fridge.check_recipe(new_recipe)
+    print(fridge.contents)
+    fridge._update_json_file()
  
