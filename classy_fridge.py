@@ -94,7 +94,6 @@ class SmartFridge:
     def remove_product(self, product):
         if self.check_product(product):
             current_quantity = self.contents[product.name][0]
-
             if product.quantity <= 0:
                 del self.contents[product.name]
             elif product.quantity >= current_quantity:
@@ -233,8 +232,6 @@ class SmartFridge:
                 self.contents = self.extract_fridge_content()
             else:
                 self.create_fridge_content_file()
-
-        # Return the contents
         return self.contents
 
 
