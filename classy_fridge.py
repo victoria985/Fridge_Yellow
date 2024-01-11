@@ -56,6 +56,7 @@ class Recipe:
         else:
             print(f'You are trying to remove what does not exist in recipe')
     
+    # create json file for recipe
     def create_recipe_file(self, recipe_name):
         file_name = f'{recipe_name}.json'
 
@@ -64,6 +65,7 @@ class Recipe:
                 print('creating recipe file')
                 json.dump(self.contents, file, indent=4)
     
+    # extract recipy from json file
     def extract_recipe(self, recipe_name):
         file_name = f'{recipe_name}.json'
         with open(file_name, 'r') as file:
@@ -157,6 +159,7 @@ class SmartFridge:
         else:
             print(f'Item \033[91m{key}\033[0m does not exist in the fridge')
 
+    # extract product from contents for further use
     def extract_product(self, product_name):
         if product_name in self.contents.keys():
             name = product_name
@@ -166,6 +169,7 @@ class SmartFridge:
             extracted_product = Product(name, quantity, unit, category)
             return extracted_product
     
+    # editing mode of the product, removes product form content, stores it localy, and then adds it back once finished
     def edit_product(self, product_name):
             edit_product = self.extract_product(product_name)
             self.remove_product(edit_product)
@@ -263,7 +267,7 @@ class SmartFridge:
     def close_fridge(self):
         self._update_json_file()
     
-    # Main function of runing the fridge
+    # Main function of starting the fridge
     def start(self):
         if os.path.isfile('user_data.txt'):
             print("User data file already exists.")
@@ -287,6 +291,7 @@ class SmartFridge:
                 self.create_fridge_content_file()
         return self.contents
 
+    # main function of running the fridge
     def main(self):
 
         run = True
