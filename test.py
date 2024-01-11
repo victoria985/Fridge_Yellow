@@ -1,56 +1,53 @@
-import json
+import os
+import time
 
-class FridgeContent:
-    def __init__(self, items_dict):
-        self.items_dict = items_dict
+# Importing the classes from the main code
+from classy_fridge import Product, Recipe, SmartFridge
 
-    def create_fridge_content_file(self):
-        file_name = 'fridge_content.json'
+# Prefix for test files
+test_prefix = 'test_'
 
-        with open(file_name, 'w') as file:
-            json.dump(self.items_dict, file, indent=4)
+def run_tests():
+    try:
+        # Test parameters
+        fridge = SmartFridge()
+        print("Testing SmartFridge class...")
+        time.sleep(0.5)
 
-    def extract_fridge_content(self):
-        file_name = 'fridge_content.json'
+        # Test Product class
+        print("\nTesting Product class...")
+        milk = Product('milk', 20, 'l', 'dairy')
+        print(milk)
+        time.sleep(0.5)
 
-        with open(file_name, 'r') as file:
-            data = json.load(file)
-            return data
+        # Test Recipe class
+        print("\nTesting Recipe class...")
+        recipe_dict = {
+            'apple': [5, 'pieces', 'fruits'],
+            'milk': [1, 'liter', 'dairy'],
+            'cheese': [500, 'grams', 'dairy'],
+            'bread': [1, 'loaf', 'bakery'],
+        }
+        new_recipe = Recipe(recipe_dict)
+        print(new_recipe.ingredients)
+        time.sleep(0.5)
 
-# Example dictionary containing categories and items
-items_dict = {
-    'proteins': [
-        ('chicken', 2),
-        ('beef', 3),
-        ('tofu', 4)
-    ],
-    'dairy': [
-        ('milk', 1),
-        ('cheese', 2),
-        ('yogurt', 3)
-    ],
-    'starch': [
-        ('rice', 2),
-        ('pasta', 3),
-        ('potato', 4)
-    ],
-    'fruits/vegetables': [
-        ('apple', 5),
-        ('broccoli', 2),
-        ('banana', 3)
-    ],
-    'fats': [
-        ('avocado', 2),
-        ('olive oil', 3),
-        ('nuts', 4)
-    ]
-}
+        # Test SmartFridge class
+        print("\nTesting SmartFridge class...")
+        fridge.get_user_input = lambda: ('TestUser', '1234')  # Mocking user input
+        extracted_content = fridge.main()
+        fridge.print_contents()
+        time.sleep(0.5)
 
-# Creating an instance of FridgeContent and calling methods to create the JSON file and extract its contents
-fridge = FridgeContent(items_dict)
-fridge.create_fridge_content_file()
+        # All tests passed
+        print("\nAll tests passed!")
 
-# Extracting the contents of the JSON file and using it
-extracted_data = fridge.extract_fridge_content()
-print("Extracted data from JSON file:")
-print(extracted_data)
+    finally:
+        # Delete test files
+        for filename in os.listdir():
+            if filename.startswith(test_prefix):
+                os.remove(filename)
+
+# Run the tests
+run_tests()
+

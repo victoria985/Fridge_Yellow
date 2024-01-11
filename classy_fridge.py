@@ -36,7 +36,7 @@ class Recipe:
     # ingredients check for recepy, returs modified list for convinience
     def check_ingredients_needed(self):
         ingredients_check = {}
-        for key, value in self.ingredients.keys():
+        for key, value in self.ingredients.items():
             ingredients_check[key] = value
         return ingredients_check
     
@@ -159,14 +159,14 @@ class SmartFridge:
     def create_fridge_content_file(self):
         file_name = 'fridge_contents.json'
 
-        with open(file_name, 'w') as file:
-            print('creating file')
-            json.dump(self.contents, file, indent=4)
+        if self.contents:
+            with open(file_name, 'w') as file:
+                print('creating file')
+                json.dump(self.contents, file, indent=4)
 
     # Extraction of json file
     def extract_fridge_content(self):
         file_name = 'fridge_contents.json'
-
         with open(file_name, 'r') as file:
             print('extracting file')
             data = json.load(file)
@@ -233,6 +233,9 @@ class SmartFridge:
                 self.contents = self.extract_fridge_content()
             else:
                 self.create_fridge_content_file()
+
+        # Return the contents
+        return self.contents
 
 
 # Test parameters
