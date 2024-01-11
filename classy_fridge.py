@@ -55,6 +55,21 @@ class Recipe:
             del self.ingredients[product.name]
         else:
             print(f'You are trying to remove what does not exist in recipe')
+    
+    def create_recipe_file(self, recipe_name):
+        file_name = f'{recipe_name}.json'
+
+        if self.contents:
+            with open(file_name, 'w') as file:
+                print('creating recipe file')
+                json.dump(self.contents, file, indent=4)
+    
+    def extract_recepy(self, recipe_name):
+        file_name = f'{recipe_name}.json'
+        with open(file_name, 'r') as file:
+            print('extracting file')
+            recipe_data = json.load(file)
+            return recipe_data
 
 
 class SmartFridge:
@@ -78,7 +93,8 @@ class SmartFridge:
     # Products quantity check function neveikia
     def check_product_quantity(self, product: Product):
         if self.check_product(product) is True:
-            return self.contents[product.name][0]
+            print(self.contents[product.name])
+            return self.contents[product.name]
         else:
             print(f'{product.name} has not been found in the fridge')
 
@@ -86,9 +102,11 @@ class SmartFridge:
     def add_product(self, product:Product):
         if not self.check_product(product):
             self.contents[product.name] = [product.quantity, product.unit_of_measurement, product.category]
+            print(f'{product.quantity} {product.unit_of_measurement} of {product.name}, {product.category} in fridge')
         else:
             new_quantity = self.contents[product.name][0] + product.quantity
             self.contents[product.name][0] = new_quantity
+            print(f'{product.quantity} {product.unit_of_measurement} of {product.name}, {product.category} in fridge')
     
     # Removing product
     def remove_product(self, product):
@@ -96,11 +114,14 @@ class SmartFridge:
             current_quantity = self.contents[product.name][0]
             if product.quantity <= 0:
                 del self.contents[product.name]
+                print(f'{product.name} removed')
             elif product.quantity >= current_quantity:
                 del self.contents[product.name]
+                print(f'{product.name} removed')
             else:
                 new_quantity = current_quantity - product.quantity
                 self.contents[product.name][0] = new_quantity
+                print(f'{product.quantity} {product.unit_of_measurement} of {product.name}, {product.category} removed (left: {new_quantity})')
         else:
             print(f"Product '{product.name}' not found in inventory.")
             
@@ -132,9 +153,19 @@ class SmartFridge:
                 if needed <= inside:
                     print(f'There is enough {key} to make the recipe\nIn fridge: {inside} {unit} \nneeded: \033[32m{needed} {unit}\033[0m')
             else:
-                print(f'There is not enough {key} to make the recipe\nIn fridge: \033[31m{inside} {unit}\033[0m \nneeded: \033[31m{needed} {unit}\033[0m')
+                print(f'There is not enough {key} to make the recipe\nIn fridge: \033[31m{inside} {unit}\033[0m \nneeded: \033[91m{needed} {unit}\033[0m')
         else:
-            print(f'Item \033[31m{key}\033[0m does not exist in the fridge')
+            print(f'Item \033[91m{key}\033[0m does not exist in the fridge')
+
+    def extract_product(self, product_name):
+        if self.check_product is True:
+            name = product_name
+            quantity = self.contents[product_name][0]
+            unit = self.contents[product_name][1]
+            category = self.contents[product_name][2]
+            extracted_product = Product(name, quantity, unit, category)
+            return extracted_product
+            
 
     # User input function to get user name and pin code
     @staticmethod
@@ -211,7 +242,7 @@ class SmartFridge:
         self._update_json_file()
     
     # Main function of runing the fridge
-    def main(self):
+    def start(self):
         if os.path.isfile('user_data.txt'):
             print("User data file already exists.")
             user_name, pin_code = self.read_user_data_from_file()
@@ -234,11 +265,53 @@ class SmartFridge:
                 self.create_fridge_content_file()
         return self.contents
 
+    def main(self):
+
+        run = True
+        print(f'Hello {self.user_name}!')
+
+        while run is True:
+            print(f'What would you like to do?')
+            user_command = input('Enter a command: ')
+            match user_command:
+                case 'help':
+                    print(f'Help menue\n')
+                    print()
+                case 'contents':
+                    self.print_contents()
+                case 'add':
+                    name = input('Please enter product name:\n ')
+                    quantity = input('Enter product quantity:\n ')
+                    unit = input('Enter product unit of measurment:\n ')
+                    category = input('Enter product category:\n ')
+                    add_item = Product(name, quantity, unit, category)
+                    self.add_product(add_item)
+                case 'remove':
+                    name = input('Please enter product name:\n ')
+                    quantity = input('Enter product quantity:\n ')
+                    remove_item = Product(name, quantity)
+                    self.remove_product(remove_item)
+                case 'check':
+                    name = input('Please enter product name:\n ')
+                    check_product = Product(name)
+                    self.check_product_quantity(check_product)
+                case 'edit_product':
+                    print('Product editing mode on\n')
+                    choise = input('Enter product name if you like to proceed (type [exit] to leave this mode):\n')
+                    if choise == 'exit':
+                            break
+                    else:
+                case 'recipe':
+                    break
+                    
+
+
 
 # Test parameters
 
 if __name__ == "__main__":
     fridge = SmartFridge()
+    fridge.start()
     fridge.main()
 
 
@@ -278,4 +351,3 @@ if __name__ == "__main__":
     fridge.check_recipe(new_recipe)
     print(fridge.contents)
     fridge._update_json_file()
- 
