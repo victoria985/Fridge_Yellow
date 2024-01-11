@@ -29,25 +29,31 @@ class Recipe:
         self.ingredients = ingredients
         self.instruction = instruction
     
-    def check_ingredients(self, product:Product):
+    def check_ingredient(self, product: Product):
         return product.name in self.ingredients.keys()
 
+    def check_ingredients_needed(self):
+        ingredients_check = {}
+        for key, value in self.ingredients.keys:
+            ingredients_check[key] = value
+        return ingredients_check
+    
     def add_ingredient(self, product: Product):
         self.ingredients[product.name] = [{product.quantity}, product.unit_of_measurement]
 
     def change_ingredient_quantity(self, product:Product, new_quantity):
-        if self.check_ingredients(product) is True:
+        if self.check_ingredient(product) is True:
             self.ingredients[product.name][0] = new_quantity
 
     def remove_ingredient(self, product):
-        if self.check_ingredients(product) is True:
+        if self.check_ingredient(product) is True:
             del self.ingredients[product.name]
 
 
 class SmartFridge:
 
     # Defining class
-    def __init__(self, user_name: str, pin_code: str, temperature: int = 5, contents: dict = {}):
+    def __init__(self, user_name: str = '', pin_code: str = '', temperature: int = 5, contents: dict = {}):
         self.user_name = user_name
         self.__pin = pin_code
         self.__temperature = temperature
@@ -112,7 +118,17 @@ class SmartFridge:
 
     # Recepy check function (not working)
     def check_recipe(self, recipe: Recipe):
-        pass
+        for key in recipe.ingredients.keys():
+            if key in self.contents.keys():
+                needed = recipe.ingredients[key][0]
+                inside = self.contents[key][0]
+                unit = self.contents[key][1]
+                if needed <= inside:
+                    print(f'There is enough {key} to make the recipe\nIn fridge: {inside} {unit} \nneeded: \033[32m{needed} {unit}\033[0m')
+            else:
+                print(f'There is not enough {key} to make the recipe\nIn fridge: \033[31m{inside} {unit}\033[0m \nneeded: \033[31m{needed} {unit}\033[0m')
+        else:
+            print(f'Item \033[31m{key}\033[0m does not exist in the fridge')
 
     # User input function to get user name and pin code
     @staticmethod
@@ -182,6 +198,10 @@ class SmartFridge:
             else:
                 print("PIN code does not match. Please try again.")
     
+    # Closing fridge, save file and exit program
+    def close_fridge(self):
+        self._update_json_file()
+    
     # Main function of runing the fridge
     def main(self):
         if os.path.isfile('user_data.txt'):
@@ -206,7 +226,7 @@ class SmartFridge:
 
 milk = Product('milk', 20, 'l', 'dairy')
 print(milk)
-cheese = Product('cheese', 'Kg', 2, 'dairy' )
+cheese = Product('cheese', 2, 'Kg', 'dairy' )
 print(cheese)
 fridge = SmartFridge('Evaldas', '2315')
 fridge.add_product(milk)
@@ -227,10 +247,18 @@ fridge.contents = {
     'banana': [2, 'pieces', 'fruits'],
     'milk': [1, 'liter', 'dairy'],
     'cheese': [250, 'grams', 'dairy'],
-    'bread': [1, 'loaf', 'bakery'],
     'lettuce': [1, 'head', 'vegetables'],
 }
 fridge.print_contents()
+recipy_dict = {
+    'apple': [5, 'pieces', 'fruits'],
+    'milk': [1, 'liter', 'dairy'],
+    'cheese': [500, 'grams', 'dairy'],
+    'bread': [1, 'loaf', 'bakery'],
+}
+new_recipe = Recipe(recipy_dict)
+print(new_recipe.ingredients)
+fridge.check_recipe(new_recipe)
 
 # if __name__ == "__main__":
 #     fridge = SmartFridge("", "", 5, fridge_content)

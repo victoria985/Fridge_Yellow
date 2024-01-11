@@ -1,2 +1,0 @@
-user_name = evaldas
-pin_code = 2315
