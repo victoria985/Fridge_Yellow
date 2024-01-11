@@ -5,7 +5,7 @@ import json
 class Product:
 
     # Defining Class
-    def __init__(self, name, quantity:float = 0, unit_of_measurement: str = 'unit', category: str = '', **kwargs):
+    def __init__(self, name, quantity: float = 0, unit_of_measurement: str = 'unit', category: str = '', **kwargs):
         self.name = name
         self.quantity = quantity
         self.unit_of_measurement = unit_of_measurement
@@ -34,7 +34,7 @@ class Recipe:
         return product in self.ingredients
     
     # check product from name
-    def check_product(self, product_name:str):
+    def check_ingredient_name(self, product_name:str):
         for product in self.contents:
             if product.name == product_name:
                 return product
@@ -42,7 +42,10 @@ class Recipe:
 
     # add function
     def add_ingredient(self, product: Product):
-        self.ingredients.append(product)
+        if self.check_ingredient(product) is True:
+            print('Ingredient already exists in recipe, try changing it')
+        else:
+            self.ingredients.append(product)
 
     # change value fucntion
     def change_ingredient_quantity(self, product:Product, new_quantity):
@@ -52,7 +55,7 @@ class Recipe:
     # remove ingredient function
     def remove_ingredient(self, product):
         if self.check_ingredient(product) is True:
-            del self.ingredients.pop(product)
+            self.ingredients.pop(product)
         else:
             print(f'You are trying to remove what does not exist in recipe')
     
@@ -88,8 +91,11 @@ class SmartFridge:
     def __str__(self):
         return f'{self.user_name}: {self.__pin}: {self.__temperature}: {self.contents}'
     
-    # Products check function neveikianti pakoklas
-    def check_product(self, product_name:str):
+    def check_product(self, product: Product):
+        return product in self.contents
+    
+    # Products check function 
+    def check_product_name(self, product_name:str):
         for product in self.contents:
             if product.name == product_name:
                 return product
@@ -100,29 +106,31 @@ class SmartFridge:
         return product.quantity - quantity
 
     # add product fucntion
-    def add_product(self, name:str, quantity:float):
-        product = self.check_product(name)
+    def add_product(self, product: Product):
+        product = self.check_product
         if product is not None:
             product.quantity += quantity
         else:
-            self.contents.append(Product(name, quantity))
+            self.contents.append(product)
             
     # Print fridge content
-    def print_contents(self):
-        printable_content = {}
-        for product, values in self.contents.items():
-            category = values[2]
-            product_info = f"{product}: {values[0]} {values[1]}"
-            
-            if category not in printable_content:
-                printable_content[category] = [product_info]
-            else:
-                printable_content[category].append(product_info)
+    def print_products(self):
+    # Create a dictionary to store products by category
+        products_by_category = {}
 
-        for category, products in printable_content.items():
+        # Group products by category
+        for product in self.contents:
+            category = product.category
+            if category not in products_by_category:
+                products_by_category[category] = []
+            products_by_category[category].append(product)
+
+        # Print products by category
+        for category, products in products_by_category.items():
             print(f"{category}:")
-            for product_info in products:
-                print(f"  {product_info}")
+            for product in products:
+                print(f"{product.name} - {product.quantity} {product.unit_of_measure}")
+            print()
 
 
     # Recepy check function (not working)
@@ -319,47 +327,59 @@ class SmartFridge:
 
 # Test parameters
 
+product1 = Product("Apple", 5, "pieces", "Fruits")
+product2 = Product("Banana", 3, "pieces", "Fruits")
+product3 = Product("Milk", 1, "liter", "Dairy")
+product4 = Product("Bread", 2, "loaves", "Bakery")
 
+fridge = SmartFridge()
+
+fridge.add_product(product1)
+fridge.add_product(product2)
+fridge.add_product(product3)
+fridge.add_product(product4)
+
+fridge.print_products()
 
 # if __name__ == "__main__":
 #     fridge = SmartFridge()
 #     fridge.start()
 #     fridge.main()
 
-fridge = SmartFridge()
-milk = Product('milk', 20, 'l', 'dairy')
-print(milk)
-cheese = Product('cheese', 2, 'Kg', 'dairy' )
-print(cheese)
-fridge.add_product(milk)
-print('first milk')
-print(fridge.contents)
-fridge.add_product(milk)
-fridge.add_product(cheese)
-print(fridge.contents)
-remove_milk = Product('milk', 10)
-fridge.remove_product(remove_milk)
-print('milk removal')
-print(fridge.contents)
-remove_all_milk = Product('milk')
-fridge.remove_product(remove_all_milk)
-print(fridge.contents)
-fridge.contents = {
-    'apple': [5, 'pieces', 'fruits'],
-    'banana': [2, 'pieces', 'fruits'],
-    'milk': [1, 'liter', 'dairy'],
-    'cheese': [250, 'grams', 'dairy'],
-    'lettuce': [1, 'head', 'vegetables'],
-}
-fridge.print_contents()
-recipy_dict = {
-    'apple': [5, 'pieces', 'fruits'],
-    'milk': [1, 'liter', 'dairy'],
-    'cheese': [500, 'grams', 'dairy'],
-    'bread': [1, 'loaf', 'bakery'],
-}
-new_recipe = Recipe(recipy_dict)
-print(new_recipe.ingredients)
-fridge.check_recipe(new_recipe)
-print(fridge.contents)
-fridge._update_json_file()
+# fridge = SmartFridge()
+# milk = Product('milk', 20, 'l', 'dairy')
+# print(milk)
+# cheese = Product('cheese', 2, 'Kg', 'dairy' )
+# print(cheese)
+# fridge.add_product(milk)
+# print('first milk')
+# print(fridge.contents)
+# fridge.add_product(milk)
+# fridge.add_product(cheese)
+# print(fridge.contents)
+# remove_milk = Product('milk', 10)
+# fridge.remove_product(remove_milk)
+# print('milk removal')
+# print(fridge.contents)
+# remove_all_milk = Product('milk')
+# fridge.remove_product(remove_all_milk)
+# print(fridge.contents)
+# fridge.contents = {
+#     'apple': [5, 'pieces', 'fruits'],
+#     'banana': [2, 'pieces', 'fruits'],
+#     'milk': [1, 'liter', 'dairy'],
+#     'cheese': [250, 'grams', 'dairy'],
+#     'lettuce': [1, 'head', 'vegetables'],
+# }
+# fridge.print_contents()
+# recipy_dict = {
+#     'apple': [5, 'pieces', 'fruits'],
+#     'milk': [1, 'liter', 'dairy'],
+#     'cheese': [500, 'grams', 'dairy'],
+#     'bread': [1, 'loaf', 'bakery'],
+# }
+# new_recipe = Recipe(recipy_dict)
+# print(new_recipe.ingredients)
+# fridge.check_recipe(new_recipe)
+# print(fridge.contents)
+# fridge._update_json_file()
