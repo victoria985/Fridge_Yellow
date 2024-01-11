@@ -25,34 +25,34 @@ class Product:
 # Class not functional for now
 class Recipe:
 
-    def __init__(self, ingredients:dict = {}, instruction:str = ''):
+    def __init__(self, ingredients: list = [], instruction:str = ''):
         self.ingredients = ingredients
         self.instruction = instruction
     
     # ingredient check, used in later functions
     def check_ingredient(self, product: Product):
-        return product.name in self.ingredients.keys()
-
-    # ingredients check for recepy, returs modified list for convinience
-    def check_ingredients_needed(self):
-        ingredients_check = {}
-        for key, value in self.ingredients.items():
-            ingredients_check[key] = value
-        return ingredients_check
+        return product in self.ingredients
     
+    # check product from name
+    def check_product(self, product_name:str):
+        for product in self.contents:
+            if product.name == product_name:
+                return product
+        return  None
+
     # add function
     def add_ingredient(self, product: Product):
-        self.ingredients[product.name] = [{product.quantity}, product.unit_of_measurement]
+        self.ingredients.append(product)
 
     # change value fucntion
     def change_ingredient_quantity(self, product:Product, new_quantity):
         if self.check_ingredient(product) is True:
-            self.ingredients[product.name][0] = new_quantity
+            product.quantity = new_quantity
     
     # remove ingredient function
     def remove_ingredient(self, product):
         if self.check_ingredient(product) is True:
-            del self.ingredients[product.name]
+            del self.ingredients.pop(product)
         else:
             print(f'You are trying to remove what does not exist in recipe')
     
@@ -77,7 +77,7 @@ class Recipe:
 class SmartFridge:
 
     # Defining class
-    def __init__(self, user_name: str = '', pin_code: str = '', temperature: int = 5, contents: dict = {}):
+    def __init__(self, user_name: str = '', pin_code: str = '', temperature: int = 5, contents: list = []):
         self.user_name = user_name
         self.__pin = pin_code
         self.__temperature = temperature
@@ -89,43 +89,23 @@ class SmartFridge:
         return f'{self.user_name}: {self.__pin}: {self.__temperature}: {self.contents}'
     
     # Products check function neveikianti pakoklas
-    def check_product(self, product:Product):
-        return product.name in self.contents.keys()
-        
-    # Products quantity check function neveikia
-    def check_product_quantity(self, product: Product):
-        if self.check_product(product) is True:
-            print(self.contents[product.name])
-            return self.contents[product.name]
-        else:
-            print(f'{product.name} has not been found in the fridge')
-
-    # Add product function
-    def add_product(self, product:Product):
-        if not self.check_product(product):
-            self.contents[product.name] = [product.quantity, product.unit_of_measurement, product.category]
-            print(f'{product.quantity} {product.unit_of_measurement} of {product.name}, {product.category} in fridge')
-        else:
-            new_quantity = self.contents[product.name][0] + product.quantity
-            self.contents[product.name][0] = new_quantity
-            print(f'{product.quantity} {product.unit_of_measurement} of {product.name}, {product.category} in fridge')
+    def check_product(self, product_name:str):
+        for product in self.contents:
+            if product.name == product_name:
+                return product
+        return  None
     
-    # Removing product
-    def remove_product(self, product:Product):
-        if self.check_product(product):
-            current_quantity = self.contents[product.name][0]
-            if product.quantity <= 0:
-                del self.contents[product.name]
-                print(f'{product.name} removed')
-            elif product.quantity >= current_quantity:
-                del self.contents[product.name]
-                print(f'{product.name} removed')
-            else:
-                new_quantity = current_quantity - product.quantity
-                self.contents[product.name][0] = new_quantity
-                print(f'{product.quantity} {product.unit_of_measurement} of {product.name}, {product.category} removed (left: {new_quantity})')
+    # check product function
+    def check_product_quantity(self, product:Product, quantity:float):
+        return product.quantity - quantity
+
+    # add product fucntion
+    def add_product(self, name:str, quantity:float):
+        product = self.check_product(name)
+        if product is not None:
+            product.quantity += quantity
         else:
-            print(f"Product '{product.name}' not found in inventory.")
+            self.contents.append(Product(name, quantity))
             
     # Print fridge content
     def print_contents(self):
@@ -331,7 +311,8 @@ class SmartFridge:
                         else:
                             self.edit_product(choise)
                 case 'recipe':
-                    break
+                    print('Recepy meniu\n')
+                    print('Options:\n[add] - to add product to recepy\n[]')
                     
 
 

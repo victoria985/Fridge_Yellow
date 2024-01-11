@@ -51,3 +51,14 @@ def run_tests():
 # Run the tests
 run_tests()
 
+
+
+
+
+
+
+
+productas(name, value, categorija)
+
+
+productas(name) # value = 0, cuategory = ''
