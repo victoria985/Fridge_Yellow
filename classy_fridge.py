@@ -109,9 +109,14 @@ class SmartFridge:
     def add_product(self, product: Product):
         product = self.check_product
         if product is not None:
-            product.quantity += quantity
+            quantity = input('Product already exist, please enter quantity you would like to add')
+            self.change_quantity(product, quantity)
         else:
             self.contents.append(product)
+
+    def change_quantity(self, product: Product, quantity:float):
+         new_quantity = product.quantity + quantity
+         product.quantity = new_quantity
             
     # Print fridge content
     def print_products(self):
