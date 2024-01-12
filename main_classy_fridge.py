@@ -11,8 +11,10 @@ def start():
         print("User data file already exists.")
         user_name, pin_code = fridge.read_user_data_from_file()
         fridge.user_name = user_name
-        fridge.__pin = pin_code
+        fridge.__pin = pin_code.strip()
         print(f"Welcome back, {user_name}")
+        print(fridge.user_name)
+        print(fridge.__pin)
         fridge.confirm_pin()
         if os.path.isfile('fridge_contents.json'):
             fridge.contents = fridge.extract_fridge_content()
@@ -27,11 +29,13 @@ def start():
             fridge.contents = fridge.extract_fridge_content()
         else:
             fridge.create_fridge_content_file()
-    return fridge.contents
+    return fridge, fridge.contents
 
 # main function of running the fridge
 def main():
 
+    fridge = SmartFridge()
+    
     run = True
     print(f'Hello {fridge.user_name}!')
 
@@ -113,6 +117,8 @@ def main():
 
 
 # Test parameters
+
+main()
 
 product1 = Product("Apple", 5, "pieces", "Fruits")
 product2 = Product("Banana", 3, "pieces", "Fruits")
