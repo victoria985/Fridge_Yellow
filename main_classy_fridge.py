@@ -69,8 +69,43 @@ def main():
                 name_edit = input('Please enter product you want to edit:\n')
                 fridge.edit_product(name_edit)
             case 'recipe':
-                print('Recepy meniu\n')
-                print('Options:\n[add] - to add product to recepy\n[]')
+                while True:
+                    recipe = Recipe()
+                    print('Recipe meniu, type [help] for help\n')
+                    choice = input
+                    match choice:
+                        case 'help':
+                            print('Options:\n')
+                            print('[add] - to add ingredient to recipe')
+                            print('[change] - change ingredient quantity')
+                            print('[remove] - remove ingredient from recipe')
+                            print('[create] - create a recepy file')
+                            print('[fetch] - fetch recepy file')
+                            print('[exit] - exit')
+                        case 'add':
+                            name = input('Enter name of ingredient:')
+                            r_product = recipe.check_ingredient_name(name)
+                            if r_product is not None:
+                                print(f'Ingredient already is in recipe({r_product.name})')
+                                choice = input()
+                                pass
+                        case 'change':
+                            choice = input('Enter ingredient:')
+                            c_product = recipe.check_ingredient_name(choice)
+                            if c_product is not None:
+                                new_quantity = input(f'{c_product.name} {c_product.quantity}Please enter new quantity')
+                                recipe.change_ingredient_quantity(c_product, new_quantity)
+                        case 'remove':
+                            choice = input('Enter ingredient you want to remove: ')
+                            r_product = recipe.check_ingredient_name(choice)
+                            if r_product is not None:
+                                recipe.remove_ingredient(r_product)
+                        case 'create':
+                            pass
+                        case 'fetch':
+                            pass
+                        case 'exit':
+                            break
             case 'exit':
                 run = False
                 

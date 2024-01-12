@@ -14,7 +14,7 @@ class Recipe:
     
     # check product from name
     def check_ingredient_name(self, product_name:str):
-        for product in self.contents:
+        for product in self.ingredients:
             if product.name == product_name:
                 return product
         return  None
