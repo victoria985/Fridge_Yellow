@@ -106,10 +106,9 @@ class SmartFridge:
     # editing mode of the product, removes product form content, stores it localy, and then adds it back once finished
     def edit_product(self, product_name):
         edit_product = self.check_product_name(product_name)
-        print(f'Product info:\n {edit_product.__str__}')
-        print('Product editing mode on. Please chose command ([exit], [name], [quantity], [unit], [category])')
-        choice = input
         while True:
+            print(f'Product info:\n {edit_product.__str__}')
+            choice = input('Product editing mode on. Please chose command ([exit], [name], [quantity], [unit], [category])')
             match choice:
                 case 'name':
                     new_name = input('Enter new name:')
@@ -174,10 +173,11 @@ class SmartFridge:
         pin_code = None
         with open('user_data.txt', 'r') as file:
             for line in file:
-                if line.startswith('user_name'):
-                    user_name = line.split('=')[1].strip()
-                elif line.startswith('pin_code'):
-                    pin_code = line.split('=')[1].strip()
+                key, value = line.strip().split('=')
+                if key == 'user_name':
+                    user_name = value
+                elif key == 'pin_code':
+                    pin_code = value
         return user_name, pin_code
 
     # Function to change class values to user information
@@ -189,8 +189,8 @@ class SmartFridge:
     # Pin code check
     def confirm_pin(self):
         while True:
-            confirm_pin = input("Please confirm your PIN code: ")
-            if confirm_pin == self.__pin:
+            pin = input("Please confirm your PIN code: ")
+            if pin == self.__pin:
                 print("PIN code confirmed.")
                 break
             else:
