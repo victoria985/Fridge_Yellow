@@ -107,7 +107,7 @@ class SmartFridge:
     def edit_product(self, product_name):
         edit_product = self.check_product_name(product_name)
         while True:
-            print(f'Product info:\n {edit_product.__str__}')
+            print(f'Product info:\n {edit_product.__str__()}')
             choice = input('Product editing mode on. Please chose command ([exit], [name], [quantity], [unit], [category])')
             match choice:
                 case 'name':
@@ -118,7 +118,7 @@ class SmartFridge:
                     edit_product.quantity = new_quantity
                 case 'unit':
                     new_unit = input('Enter new unit:')
-                    edit_product.unit = new_unit
+                    edit_product.unit_of_measurement = new_unit
                 case 'category':
                     new_category = input('Enter new category:')
                     edit_product.category = new_category
