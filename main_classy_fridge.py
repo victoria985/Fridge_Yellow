@@ -46,6 +46,7 @@ def main():
                 print('[remove] - remove product')
                 print('[check] - check product quantity')
                 print('[edit_product] - editing mode, use at your own risk')
+                print('[exit] - exit')
             case 'contents':
                 fridge.print_products()
             case 'add':
@@ -70,6 +71,8 @@ def main():
             case 'recipe':
                 print('Recepy meniu\n')
                 print('Options:\n[add] - to add product to recepy\n[]')
+            case 'exit':
+                run = False
                 
 
 
