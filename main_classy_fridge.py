@@ -35,7 +35,7 @@ def start():
 def main():
 
     fridge = SmartFridge()
-    
+
     run = True
     print(f'Hello {fridge.user_name}!')
 
@@ -55,7 +55,9 @@ def main():
                 fridge.print_products()
             case 'add':
                 name = input('Please enter product name:\n ')
-                quantity = input('Enter product quantity:\n ')
+                while True:
+                    quantity = input('Enter product quantity:\n ')
+                    
                 unit = input('Enter product unit of measurment:\n ')
                 category = input('Enter product category:\n ')
                 add_item = Product(name, quantity, unit, category)
@@ -83,8 +85,8 @@ def main():
                             print('[add] - to add ingredient to recipe')
                             print('[change] - change ingredient quantity')
                             print('[remove] - remove ingredient from recipe')
-                            print('[create] - create a recepy file')
-                            print('[fetch] - fetch recepy file')
+                            print('[create] - create a recipe file')
+                            print('[fetch] - fetch recipe file')
                             print('[exit] - exit')
                         case 'add':
                             name = input('Enter name of ingredient:')
