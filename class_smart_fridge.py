@@ -68,7 +68,7 @@ class SmartFridge:
             
     # Print fridge content
     def print_products(self):
-    # Create a dictionary to store products by category
+        # Create a dictionary to store products by category
         products_by_category = {}
 
         # Group products by category
@@ -86,7 +86,7 @@ class SmartFridge:
             print()
 
 
-    # Recepy check function (not working)
+    # Recipe check function (not working)
     def check_recipe(self, recipe: Recipe):
         for key in recipe.ingredients.keys():
             if key in self.contents.keys():
