@@ -1,3 +1,4 @@
+![](smart_fridge_gif.gif)
 Naujas protingas geltonas šaldytuvas (alpha versija 0.1)
 
 Pagrindinės šaldytuvo užduotys:
