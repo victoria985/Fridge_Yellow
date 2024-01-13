@@ -35,10 +35,12 @@ class SmartFridge:
     def add_product(self, product: Product):
             if self.check_product(product) is False:
                 self.contents.append(product)
+                print(f'{product.quantity} {product.unit_of_measurement} of {product.name} has been added to the fridge')
             else:
                 print(f'{product.name} alredy is in the fridge({product.quantity} {product.unit_of_measurement}), please enter quantity you would like to add')
                 quantity = float(input)
                 self.change_quantity(product, quantity)
+                print(f'Total in fridge: {product.quantity} {product.unit_of_measurement} of {product.name}')
 
     # remove product    
     def remove_product(self, product: Product):
@@ -49,14 +51,17 @@ class SmartFridge:
                 choice = input("Your choice: ")
                 if choice == 'r':
                     self.contents.remove(product)
+                    print(f'{product.name} has been removed from fridge')
                     break
                 elif choice.isdigit():
                     quantity = int(choice)
                     if quantity < product.quantity:
                         new_quantity = self.check_product_quantity(product, quantity)
                         product.quantity = new_quantity
+                        print(f'In fridge: {product.name} - {product.quantity} {product.unit_of_measurement}')
                     else:
                         self.contents.remove(product)
+                        print(f'{product.name} has been removed from fridge')
                     break
                 else:
                     print("Invalid input. Please enter 'r' to remove or a numeric value for quantity.")
@@ -108,19 +113,19 @@ class SmartFridge:
         edit_product = self.check_product_name(product_name)
         while True:
             print(f'Product info:\n {edit_product.__str__()}')
-            choice = input('Product editing mode on. Please chose command ([exit], [name], [quantity], [unit], [category])')
+            choice = input('Product editing mode on. Please chose command ([exit], [name], [quantity], [unit], [category])\n')
             match choice:
                 case 'name':
-                    new_name = input('Enter new name:')
+                    new_name = input('Enter new name:\n')
                     edit_product.name = new_name
                 case 'quantity':
-                    new_quantity = input('Enter new quantity:')
+                    new_quantity = input('Enter new quantity:\n')
                     edit_product.quantity = new_quantity
                 case 'unit':
-                    new_unit = input('Enter new unit:')
+                    new_unit = input('Enter new unit:\n')
                     edit_product.unit_of_measurement = new_unit
                 case 'category':
-                    new_category = input('Enter new category:')
+                    new_category = input('Enter new category:\n')
                     edit_product.category = new_category
                 case 'exit':
                     break

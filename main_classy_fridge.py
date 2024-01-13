@@ -44,11 +44,12 @@ def main():
         user_command = input('Enter a command ([help] for help meniu): ')
         match user_command:
             case 'help':
-                print(f'Help meniu\n')
+                print('Help meniu:\n')
                 print('[contents] - show the contents of the fridge')
                 print('[add] - add product')
                 print('[remove] - remove product')
                 print('[check] - check product quantity')
+                print('[recipe] - recipe meniu')
                 print('[edit_product] - editing mode, use at your own risk')
                 print('[exit] - exit')
             case 'contents':
@@ -57,7 +58,10 @@ def main():
                 name = input('Please enter product name:\n ')
                 while True:
                     quantity = input('Enter product quantity:\n ')
-                    
+                    if float(quantity) is False:
+                        print('Wrong value, expecting float')
+                    else:
+                        break
                 unit = input('Enter product unit of measurment:\n ')
                 category = input('Enter product category:\n ')
                 add_item = Product(name, quantity, unit, category)
