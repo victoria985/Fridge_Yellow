@@ -46,6 +46,7 @@ def main():
                 print('[check] - check product quantity')
                 print('[recipe] - recipe meniu')
                 print('[edit_product] - editing mode, use at your own risk')
+                print('[clear] - remove all items from the fridge')
                 print('[exit] - exit')
             case 'contents':
                 fridge.print_products()
@@ -144,6 +145,9 @@ def main():
                             print(recipe.ingredients)
                         case 'exit':
                             break
+            case 'clear':
+                fridge.contents = []
+                fridge.save_to_json('fridge_contents.json')
             case 'exit':
                 fridge.save_to_json('fridge_contents.json')
                 run = False
