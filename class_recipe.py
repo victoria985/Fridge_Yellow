@@ -36,13 +36,45 @@ class Recipe:
             print(f'You are trying to remove what does not exist in recipe')
     
     # create json file for recipe
-    def create_recipe_file(self, recipe_name):
-        file_name = f'{recipe_name}.json'
+    def save_to_json(self, filename):
+        recipe_file = f'{filename}.json'
+        data = []
+        for product in self.ingredients:
+            # Convert each product to a dictionary
+            product_dict = {
+                "name": product.name,
+                "quantity": product.quantity,
+                "unit_of_measurement": product.unit_of_measurement,
+                "category": product.category,
+                "recipe_quantity": product.recipe_quantity
+                # Add any additional attributes from kwargs as needed
+            }
+            data.append(product_dict)
 
-        if self.contents:
-            with open(file_name, 'w') as file:
-                print('creating recipe file')
-                json.dump(self.contents, file, indent=4)
+        # Save the list of product dictionaries to a JSON file
+        with open(recipe_file, 'w') as json_file:
+            json.dump(data, json_file, indent=2)
+    
+    def load_from_json(self, filename):
+        # Initialize an empty list to store the loaded data
+        recipe_file = f'{filename}.json'
+        loaded_products = []
+
+        try:
+            # Load data from the JSON file
+            with open(recipe_file, 'r') as json_file:
+                loaded_data = json.load(json_file)
+
+            # Create Product objects from the loaded data
+            loaded_products = [Product(**product_data) for product_data in loaded_data]
+
+        except FileNotFoundError:
+            print(f"File '{recipe_file}' not found.")
+
+        # Always update self.contents, even if it's an empty list
+        self.ingredients = loaded_products
+
+        return loaded_products
     
     # extract recipy from json file
     def extract_recipe(self, recipe_name):
