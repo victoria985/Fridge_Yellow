@@ -1,6 +1,6 @@
 ![](smart_fridge_gif.gif)
 
-Naujas protingas geltonas šaldytuvas (Beta 1.14)
+Naujas protingas geltonas šaldytuvas (Beta 1.15)
 
 Pagrindinės šaldytuvo užduotys:
 

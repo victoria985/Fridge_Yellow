@@ -21,18 +21,15 @@ class Recipe:
 
     # add function
     def add_ingredient(self, product: Product):
-        if self.check_ingredient(product) is True:
-            print('Ingredient already exists in recipe, try changing it')
-        else:
-            self.ingredients.append(product)
+        self.ingredients.append(product)
 
     # change value fucntion
     def change_ingredient_quantity(self, product:Product, new_quantity):
-        if self.check_ingredient(product) is True:
-            product.quantity = new_quantity
+        product.recipe_quantity = new_quantity
+            
     
     # remove ingredient function
-    def remove_ingredient(self, product):
+    def remove_ingredient(self, product: Product):
         if self.check_ingredient(product) is True:
             self.ingredients.remove(product)
         else:
