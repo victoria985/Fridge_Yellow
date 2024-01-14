@@ -1,4 +1,3 @@
-import os
 import json
 from class_recipe import Recipe
 from class_product import Product
