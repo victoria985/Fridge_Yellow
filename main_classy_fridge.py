@@ -17,7 +17,8 @@ def start():
         print(f"Welcome back, {user_name}")
         fridge.confirm_pin()
         if os.path.isfile('fridge_contents.json'):
-            fridge.contents = fridge.extract_fridge_content()
+            loaded_contents = fridge.load_from_json('fridge_contents.json')
+            fridge.contents = loaded_contents
         else:
             fridge.create_fridge_content_file()
     else:
@@ -49,7 +50,7 @@ def main():
             case 'contents':
                 fridge.print_products()
             case 'add':
-                a_name = input('Please enter product name:\n ')
+                a_name = input('Please enter product name:\n')
                 a_product = fridge.check_product_name(a_name)
                 if a_product is not None:
                     print(f'{a_product.name} is in the fridge ({a_product.quantity} {a_product.unit_of_measurement})')
@@ -134,13 +135,17 @@ def main():
                         case 'check':
                             fridge.check_recipe(recipe)
                         case 'create':
-                            pass
+                            name = input('Please name recipe you want to save:\n')
+                            recipe.save_to_json(name)
                         case 'fetch':
-                            pass
+                            name = input('Name a recipe you want to load:\n')
+                            f_recipe = recipe.load_from_json(name)
+                            recipe.ingredients.append(f_recipe)
+                            print(recipe.ingredients)
                         case 'exit':
                             break
             case 'exit':
-                fridge._update_json_file
+                fridge.save_to_json('fridge_contents.json')
                 run = False
                 return run
                 

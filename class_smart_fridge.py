@@ -149,18 +149,44 @@ class SmartFridge:
             json.dump(self.contents, file, indent=4)
 
     # Extraction of json file
-    def extract_fridge_content(self):
-        file_name = 'fridge_contents.json'
-        with open(file_name, 'r') as file:
-            print('extracting file')
-            data = json.load(file)
-            return data
+    def load_from_json(self, filename):
+        # Initialize an empty list to store the loaded data
+        loaded_products = []
+
+        try:
+            # Load data from the JSON file
+            with open(filename, 'r') as json_file:
+                loaded_data = json.load(json_file)
+
+            # Create Product objects from the loaded data
+            loaded_products = [Product(**product_data) for product_data in loaded_data]
+
+        except FileNotFoundError:
+            print(f"File '{filename}' not found.")
+
+        # Always update self.contents, even if it's an empty list
+        self.contents = loaded_products
+
+        return loaded_products
 
     # Update json file
-    def _update_json_file(self):
-        file_name = 'fridge_contents.json'
-        with open(file_name, 'w') as file:
-            json.dump(self.contents, file, indent=4)
+    def save_to_json(self, filename = 'fridge_contents.json'):
+        data = []
+        for product in self.contents:
+            # Convert each product to a dictionary
+            product_dict = {
+                "name": product.name,
+                "quantity": product.quantity,
+                "unit_of_measurement": product.unit_of_measurement,
+                "category": product.category,
+                "recipe_quantity": product.recipe_quantity
+                # Add any additional attributes from kwargs as needed
+            }
+            data.append(product_dict)
+
+        # Save the list of product dictionaries to a JSON file
+        with open(filename, 'w') as json_file:
+            json.dump(data, json_file, indent=2)
     
     # Read and extract user data from storage
     def read_user_data_from_file(self):
@@ -190,7 +216,3 @@ class SmartFridge:
                 break
             else:
                 print("PIN code does not match. Please try again.")
-    
-    # Closing fridge, save file and exit program
-    def close_fridge(self):
-        self._update_json_file()
