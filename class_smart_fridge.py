@@ -33,14 +33,8 @@ class SmartFridge:
 
     # add product fucntion
     def add_product(self, product: Product):
-            if self.check_product(product) is False:
-                self.contents.append(product)
-                print(f'{product.quantity} {product.unit_of_measurement} of {product.name} has been added to the fridge')
-            else:
-                print(f'{product.name} alredy is in the fridge({product.quantity} {product.unit_of_measurement}), please enter quantity you would like to add')
-                quantity = float(input)
-                self.change_quantity(product, quantity)
-                print(f'Total in fridge: {product.quantity} {product.unit_of_measurement} of {product.name}')
+            self.contents.append(product)
+            print(f'{product.quantity} {product.unit_of_measurement} of {product.name} has been added to the fridge')
 
     # remove product    
     def remove_product(self, product: Product):
@@ -54,7 +48,7 @@ class SmartFridge:
                     print(f'{product.name} has been removed from fridge')
                     break
                 elif choice.isdigit():
-                    quantity = int(choice)
+                    quantity = float(choice)
                     if quantity < product.quantity:
                         new_quantity = self.check_product_quantity(product, quantity)
                         product.quantity = new_quantity
@@ -73,22 +67,26 @@ class SmartFridge:
             
     # Print fridge content
     def print_products(self):
-        # Create a dictionary to store products by category
-        products_by_category = {}
 
-        # Group products by category
-        for product in self.contents:
-            category = product.category
-            if category not in products_by_category:
-                products_by_category[category] = []
-            products_by_category[category].append(product)
+        if self.contents == []:
+            print('FRIDGE IS EMPTY')
+        else:
+            # Create a dictionary to store products by category
+            products_by_category = {}
 
-        # Print products by category
-        for category, products in products_by_category.items():
-            print(f"{category}:")
-            for product in products:
-                print(f"{product.name} - {product.quantity} {product.unit_of_measurement}")
-            print()
+            # Group products by category
+            for product in self.contents:
+                category = product.category
+                if category not in products_by_category:
+                    products_by_category[category] = []
+                products_by_category[category].append(product)
+
+            # Print products by category
+            for category, products in products_by_category.items():
+                print(f"{category}:")
+                for product in products:
+                    print(f"{product.name} - {product.quantity} {product.unit_of_measurement}")
+                print()
 
 
     # Recipe check function (not working)

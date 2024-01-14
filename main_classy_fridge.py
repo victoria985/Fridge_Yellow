@@ -55,25 +55,37 @@ def main():
             case 'contents':
                 fridge.print_products()
             case 'add':
-                name = input('Please enter product name:\n ')
-                while True:
-                    quantity = input('Enter product quantity:\n ')
-                    if float(quantity) is False:
-                        print('Wrong value, expecting float')
-                    else:
-                        break
-                unit = input('Enter product unit of measurment:\n ')
-                category = input('Enter product category:\n ')
-                add_item = Product(name, quantity, unit, category)
-                fridge.add_product(add_item)
+                a_name = input('Please enter product name:\n ')
+                if fridge.check_product_name(a_name) is not None:
+                    a_product = fridge.check_product_name(a_name)
+                    print(a_product)
+                    print(f'{a_product.name} is in the fridge ({a_product.quantity} {a_product.unit_of_measurement})')
+                    while True:
+                        a_quantity = input('Please enter quantity you would like to add:\n')
+                        if float(a_quantity) is False:
+                             print('Wrong value, expecting float')
+                        else:
+                            break
+                    fridge.change_quantity(a_product, float(a_quantity))
+                else:
+                    while True:
+                        quantity = input('Enter product quantity:\n ')
+                        if float(quantity) is False:
+                            print('Wrong value, expecting float')
+                        else:
+                            break
+                    unit = input('Enter product unit of measurment:\n ')
+                    category = input('Enter product category:\n ')
+                    add_item = Product(a_name, float(quantity), unit, category)
+                    fridge.add_product(add_item)
             case 'remove':
-                name = input('Please enter product name:\n ')
-                quantity = input('Enter product quantity:\n ')
-                remove_item = Product(name, quantity)
-                fridge.remove_product(remove_item)
+                r_name = input('Please enter product name:\n ')
+                if fridge.check_product_name(r_name) is not None:
+                    r_product = fridge.check_product_name(r_name)
+                    fridge.remove_product(r_product)
             case 'check':
                 name = input('Please enter product name:\n ')
-                check_product = Product(name)
+                check_product = fridge.check_product_name(name)
                 fridge.check_product_quantity(check_product)
             case 'edit_product':
                 name_edit = input('Please enter product you want to edit:\n')
