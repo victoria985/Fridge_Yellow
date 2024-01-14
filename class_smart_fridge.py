@@ -28,8 +28,8 @@ class SmartFridge:
         return  None
     
     # check product function
-    def check_product_quantity(self, product:Product, quantity:float):
-        return product.quantity - quantity
+    def check_product_quantity(self, product:Product, quantity:float = 0):
+        return print(f'{product.name} : {product.quantity} {product.unit_of_measurement}')
 
     # add product fucntion
     def add_product(self, product: Product):
@@ -83,26 +83,20 @@ class SmartFridge:
 
             # Print products by category
             for category, products in products_by_category.items():
-                print(f"{category}:")
+                print(f'\n{category}:')
                 for product in products:
-                    print(f"{product.name} - {product.quantity} {product.unit_of_measurement}")
+                    print(f'{product.name} - {product.quantity} {product.unit_of_measurement}')
                 print()
 
 
     # Recipe check function (not working)
     def check_recipe(self, recipe: Recipe):
-        for key in recipe.ingredients.keys():
-            if key in self.contents.keys():
-                needed = recipe.ingredients[key][0]
-                inside = self.contents[key][0]
-                unit = self.contents[key][1]
-                if needed <= inside:
-                    print(f'There is enough {key} to make the recipe\nIn fridge: {inside} {unit} \nneeded: \033[32m{needed} {unit}\033[0m')
+        for ingredient in recipe.ingredients:
+            if ingredient.quantity >= ingredient.recipe_quantity:
+                print(f'There is enough of {ingredient.name} to make the recipe (in fridge: {ingredient.quantity}, needed : {ingredient.recipe_quantity})')
             else:
-                print(f'There is not enough {key} to make the recipe\nIn fridge: \033[31m{inside} {unit}\033[0m \nneeded: \033[91m{needed} {unit}\033[0m')
-        else:
-            print(f'Item \033[91m{key}\033[0m does not exist in the fridge')
-
+                print(f'Needed for recipe: {ingredient.name} {ingredient.recipe_quantity} {ingredient.unit_of_measurement}')
+            
     # extract product from contents for further use
     # will be writen if needed later
     
@@ -143,17 +137,16 @@ class SmartFridge:
     # Function to save user information localy
     def write_user_data_to_file(self):
         with open('user_data.txt', 'w') as file:
-            file.write(f"user_name = {self.user_name}\n")
-            file.write(f"pin_code = {self.__pin}")
+            file.write(f"user_name={self.user_name}\n")
+            file.write(f"pin_code={self.__pin}")
 
     # Creation of json file
     def create_fridge_content_file(self):
         file_name = 'fridge_contents.json'
 
-        if self.contents:
-            with open(file_name, 'w') as file:
-                print('creating file')
-                json.dump(self.contents, file, indent=4)
+        with open(file_name, 'w') as file:
+            print('creating file')
+            json.dump(self.contents, file, indent=4)
 
     # Extraction of json file
     def extract_fridge_content(self):
@@ -166,7 +159,6 @@ class SmartFridge:
     # Update json file
     def _update_json_file(self):
         file_name = 'fridge_contents.json'
-
         with open(file_name, 'w') as file:
             json.dump(self.contents, file, indent=4)
     
@@ -192,7 +184,7 @@ class SmartFridge:
     # Pin code check
     def confirm_pin(self):
         while True:
-            pin = input("Please confirm your PIN code: ")
+            pin = input("Please confirm your PIN code: ").strip()
             if pin == self.__pin:
                 print("PIN code confirmed.")
                 break
