@@ -84,7 +84,8 @@ class SmartFridge:
             for category, products in products_by_category.items():
                 print(f'\n{category}:')
                 for product in products:
-                    print(f'{product.name} - {product.quantity} {product.unit_of_measurement}')
+                    if product.quantity > 0:
+                        print(f'{product.name} - {product.quantity} {product.unit_of_measurement}')
                 print()
 
 
