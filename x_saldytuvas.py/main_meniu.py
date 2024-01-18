@@ -3,6 +3,7 @@ from fridge_ok import Recipe
 import json
 
 
+
 def main():
     fridge = Fridge()
     recipe = Recipe()
@@ -40,6 +41,7 @@ def main():
             recipe.print_recipe_contens()
         else:    
             print("Bad choice, try again") 
+
 
 fridge = Fridge()
 fridge.add_product('milk', 1)
