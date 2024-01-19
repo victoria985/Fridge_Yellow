@@ -1,3 +1,19 @@
+![](smart_fridge_gif.gif)
+
+Naujas protingas geltonas šaldytuvas (Release 1.00)
+
+Pagrindinės šaldytuvo užduotys:
+
+1) Turėti atmintyje userio informacija, ty, user_name, pin_kodas.
+2) Tvarkyti šaldytuvo turini.
+3) Struktūringai pateikti šaldytuvo turinį pagal kategorijas, kategorijų apibrėžimai (matavimo vienetai, laikymo salygos)
+4) Receptų kūrimas, jų laikymas pagal pavadinimą, spausdinimas receptų su galimu jų aprašymu, receptų trinimas, automatinis gaminimo būklė (kai yra išimami arba visi produktai arba po vieną, bonusas jeigu pagal receptūra)
+5) Valymo funkcija
+
+
+
+Old version:
+
 $${\color{yellow}Šaldytuvas}$$
 
 
