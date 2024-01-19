@@ -1,8 +1,8 @@
 from product import Product
 
 class Recipe:
-    ingredients = []
-    instructions = []
+    def __init__(self):
+        self.ingredients = []
 
     def add_ingredient(self, name: str, quantity: float):
         product = Product(name, quantity)
@@ -15,15 +15,15 @@ class Recipe:
                 break
 
     def remove_ingredient(self, name: str):
-        self.ingredients = [(ingredient, quantity) 
-        for ingredient, quantity in self.ingredients 
-             if ingredient.name != name]
+        self.ingredients = [
+            (ingredient, quantity) for ingredient, quantity in self.ingredients
+            if ingredient.name != name
+        ]
 
-    def print_recipe_contens(self):
-        if isinstance(self.ingredients, list):
+    def print_recipe_contents(self):
+        if self.ingredients:
             print("Recipe Ingredients:")
             for ingredient, quantity in self.ingredients:
                 print(f"{ingredient.name}: {quantity}")
         else:
             print("No ingredients in the recipe.")
-

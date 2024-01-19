@@ -1,7 +1,6 @@
-from fridge_ok import Fridge
-from fridge_ok import Recipe
+from fridge import Fridge
+from recipe import Recipe
 import json
-
 
 
 def main():
@@ -22,39 +21,26 @@ def main():
             fridge.save()
             break
         elif choice == "1":
-            product_name = input('Product name: ')
+            name = input('Product name: ')
             quantity = float(input('Product quantity: '))
-            fridge.add_product(product_name, quantity)
-        elif choice == "2": 
-            product_name = input('Product name: ')
+            fridge.add_product(name, quantity)
+        elif choice == "2":
+            name = input('Product name: ')
             quantity = float(input('Product quantity: '))
-            fridge.remove_product(product_name, quantity) 
+            fridge.remove_product(name, quantity)
         elif choice == '3':
             fridge.print_contents()
         elif choice == '4':
             fridge.check_recipe(recipe)
         elif choice == '5':
-            product_name = input("Product name: ")
+            name = input("Product name: ")
             quantity = float(input("Product quantity: "))
-            recipe.add_ingredient(product_name, quantity)
-        elif choice == "6":  
-            recipe.print_recipe_contens()
-        else:    
-            print("Bad choice, try again") 
+            recipe.add_ingredient(name, quantity)
+        elif choice == "6":
+            recipe.print_recipe_contents()
+        else:
+            print("Bad choice, try again")
 
 
-fridge = Fridge()
-fridge.add_product('milk', 1)
-fridge.add_product('mayonnaise', 2)
-fridge.add_product('egg', 15)
-fridge.add_product('cheese', 3)
-
-recipe = Recipe()
-recipe.add_ingredient('mayonnaise', 1)
-recipe.add_ingredient('cheese', 1)
-recipe.add_ingredient('egg', 5)
-
-
-
-main()
-
+if __name__ == "__main__":
+    main()

@@ -1,23 +1,23 @@
 import json
 
 class Product:
-    def __init__(self, name:str, quantity:float, **kwargs) -> None:
+    def __init__(self, name: str, quantity: float, **kwargs) -> None:
         self.name = name
         self.quantity = quantity
-        self.unit_of_measurement = 'unit' # options: kg, g, L, ml
+        self.unit_of_measurement = 'unit'  # options: kg, g, L, ml
         for key, value in kwargs.items():
             setattr(self, key, value)
 
     def __str__(self) -> str:
         return f"{self.name}: {self.quantity}"
-    
+
     def __repr__(self) -> str:
         return f"({self.name}, {self.quantity})"
 
 
 class Recipe:
-    ingredients = []
-    instructions = []
+    def __init__(self):
+        self.ingredients = []
 
     def add_ingredient(self, name: str, quantity: float):
         product = Product(name, quantity)
@@ -30,85 +30,87 @@ class Recipe:
                 break
 
     def remove_ingredient(self, name: str):
-        self.ingredients = [(ingredient, quantity) 
-        for ingredient, quantity in self.ingredients 
-             if ingredient.name != name]
+        self.ingredients = [
+            (ingredient, quantity) for ingredient, quantity in self.ingredients
+            if ingredient.name != name
+        ]
 
-    def print_recipe_contens(self):
-        if isinstance(self.ingredients, list):
+    def print_recipe_contents(self):
+        if self.ingredients:
             print("Recipe Ingredients:")
             for ingredient, quantity in self.ingredients:
                 print(f"{ingredient.name}: {quantity}")
         else:
             print("No ingredients in the recipe.")
 
-class Fridge:
-    contents = []
 
+class Fridge:
     def __init__(self):
-        with open('fridge.json', 'r', encoding='utf-8') as fridge_file:
-          self.contents = json.load(fridge_file)
+        try:
+            with open('fridge.json', 'r', encoding='utf-8') as fridge_file:
+                self.contents = json.load(fridge_file)
+        except FileNotFoundError:
+            self.contents = []
 
     def save(self):
         with open('fridge.json', 'w', encoding='utf-8') as fridge_file:
             json.dump(self.contents, fridge_file)
 
-        
+    def check_product(self, name: str):
+        for product in self.contents:
+            if product['name'] == name:
+                return product
+        return None
 
-    def check_product(self, name: str) -> (int, Product):
-        for product_id, product in enumerate(self.contents):
-            if product.name == name:
-                return product.name, product
-        return None, None
-
-    def check_product_quantity(self, product: Product, quantity: float):
-        return product.quantity - quantity
+    def check_product_quantity(self, product, quantity: float):
+        return product['quantity'] - quantity
 
     def add_product(self, name: str, quantity: float):
-        product_id, product = self.check_product(name)
-        
+        product = self.check_product(name)
+
         if product is not None:
-            product.quantity += quantity
+            product['quantity'] += quantity
         else:
-            print(f"{name} is in the fridge.")
-            product = Product(name, quantity)
+            print(f"{name} is not in the fridge.")
+            product = {'name': name, 'quantity': quantity}
             self.contents.append(product)
 
     def remove_product(self, name: str, quantity: float):
-        name, product = self.check_product(name)
-        
+        product = self.check_product(name)
+
         if product is not None:
-            if product.quantity >= quantity:
-                product.quantity -= quantity
-                if product.quantity == 0:
+            if product['quantity'] >= quantity:
+                product['quantity'] -= quantity
+                if product['quantity'] == 0:
                     self.contents.remove(product)
             else:
-                print(f"There is not {name} in the fridge.")
+                print(f"Not enough {name} in the fridge.")
         else:
             print(f"{name} is not in the fridge.")
 
     def print_contents(self):
         print("Fridge Contents:")
-        for index, product in enumerate(self.contents, start=1):
-            print(f"{index} - {product.name}: {product.quantity}")
+        for product in self.contents:
+            print(f"{product['name']}: {product['quantity']}")
 
     def check_recipe(self, recipe: Recipe):
         for ingredient, quantity in recipe.ingredients:
-            name, product = self.check_product(ingredient.name)
-        if  product is None or product.quantity < quantity:
-            print(f"Not enough {ingredient.name} in the fridge.")
-        else:
-            print(f"All recipe ingredients are in the fridge.")   
-                
+            product = self.check_product(ingredient.name)
+            if product is None or product['quantity'] < quantity:
+                print(f"Not enough {ingredient.name} in the fridge.")
+                return
+        print("All recipe ingredients are in the fridge.")
+
     def print_recipe_ingredients(self):
-        if isinstance(self.ingredients, list):
+        if self.contents:
             print("Recipe ingredients:")
-        for ingredient, quantity in self.ingredients:
-            print(f"{ingredient.name}: {quantity}")
+            for ingredient, quantity in self.contents:
+                print(f"{ingredient['name']}: {ingredient['quantity']}")
         else:
             print("No ingredients in the recipe.")
 
- 
+
+
 def main():
     fridge = Fridge()
     recipe = Recipe()
@@ -124,15 +126,16 @@ def main():
         print('6: Print recipe ingredients')
         choice = input('Choice 0-6: ')
         if choice == "0":
+            fridge.save()
             break
         elif choice == "1":
             name = input('Product name: ')
             quantity = float(input('Product quantity: '))
             fridge.add_product(name, quantity)
-        elif choice == "2": 
+        elif choice == "2":
             name = input('Product name: ')
             quantity = float(input('Product quantity: '))
-            fridge.remove_product(name, quantity) 
+            fridge.remove_product(name, quantity)
         elif choice == '3':
             fridge.print_contents()
         elif choice == '4':
@@ -141,41 +144,11 @@ def main():
             name = input("Product name: ")
             quantity = float(input("Product quantity: "))
             recipe.add_ingredient(name, quantity)
-        elif choice == "6":  
-            recipe.print_recipe_contens()
-        else:    
-            print("Bad choice, try again") 
-
-fridge = Fridge()
-fridge.add_product('milk', 1)
-fridge.add_product('mayonnaise', 2)
-fridge.add_product('egg', 15)
-fridge.add_product('cheese', 3)
-
-recipe = Recipe()
-recipe.add_ingredient('mayonnaise', 1)
-recipe.add_ingredient('cheese', 1)
-recipe.add_ingredient('egg', 5)
-
-main()
-
-              
+        elif choice == "6":
+            recipe.print_recipe_contents()
+        else:
+            print("Bad choice, try again")
 
 
-
-
-
-
-    
-
-
-    
-
-
-
-    # meniukas | vartotojo sasaja
-
-# apple = Product('apple', 1)
-# another_apple = Product('apple', 1)
-
-# print(apple == another_apple)
+if __name__ == "__main__":
+    main()
