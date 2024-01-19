@@ -14,24 +14,24 @@ class Produktas:
 
 
 class Receptas:
-    ingridientai = []
-    instrukcijos = []
+    def __init__(self):
+        self.ingridientai = []
+        self.instrukcijos = []
 
-    def prideti_produktus(self, produktas: Produktas, kiekis: float ):
+    def prideti_produktus(self, produktas: Produktas, kiekis: float):
         self.ingridientai.append((produktas, kiekis))
 
     def patikrinti_ingridientu_kiekius(self, ingridientu_id: int, naujas_kiekis: float):
-        self.ingridientai[ingridientu_id].kiekis = naujas_kiekis
+        self.ingridientai_kiekis = naujas_kiekis
 
     def istraukti_ingridientus(self, ingridientu_id: int):
         self.ingridientai.pop(ingridientu_id)
 
-
     def print_turini(self):
-        if isinstance(self.ingridientai, list):
+        if self.ingridientai:
             print("Recepto ingridientai:")
-        for ingridientas, kiekis in self.ingridientai:
-            print(f"{ingridientas}: {kiekis}")
+            for ingridientas, kiekis in self.ingridientai:
+                print(f"{ingridientas}: {kiekis}")
         else:
             print("Nera tokio ingridiento recepte")
 
@@ -40,27 +40,34 @@ class Receptas:
 class Saldytuvas:
     turinys = []
 
-    def patikrinti_produkta(self, produktas: str) -> (int, Produktas):
-        for produkto_id, produktas in enumerate(self.turinys):
-         if produktas == produktas:
-          return produkto_id, produktas
-         else:
-          return None, None
-    
-    def patikrinti_produkto_kieki(self, produktas: Produktas, kiekis: float):
-        return produktas.kiekis - kiekis
+    def patikrinti_produkta(self, produktas_pavadinimas: str) -> Produktas:
+        for produktas in self.turinys:
+           if produktas.pavadinimas == produktas_pavadinimas:
+            return produktas
+        print(f"Produktas {produktas_pavadinimas} nerastas.")
+        return None
 
-    def prideti_produkta(self, produktas: str, kiekis: float):
-        produktas = self.patikrinti_produkta(produktas) 
-        if produktas is not None:
-            self.turinys[produktas][kiekis] += kiekis
-            print(f"{produktas} buvo saldytuve, bet pridejome dar {kiekis} daugiau.")
+    
+    def patikrinti_produkto_kieki(self, produktas: Produktas, norimas_kiekis: float, papildomas_kiekis: float):
+        if produktas.kiekis >= norimas_kiekis:
+            print(f"{produktas.pavadinimas} kiekis pakankamas ({produktas.kiekis} >= {norimas_kiekis}).")
+            return True
         else:
-            self.turinys.append(Produktas(produktas, kiekis))
-            print(f"{produktas}, {kiekis} buvo pridetas i saldytuva.")
+            print(f"{produktas.pavadinimas} kiekis nepakankamas ({produktas.kiekis} < {norimas_kiekis}).")
+
+    def prideti_produkta(self, produktas_pavadinimas: str, kiekis: float):
+        produktas = self.patikrinti_produkta(produktas_pavadinimas)
+        if produktas is not None:
+            produktas.kiekis += kiekis
+            print(f"{produktas_pavadinimas} buvo saldytuve, bet pridėjome dar {kiekis} daugiau.")
+        else:
+            naujas_produktas = Produktas(produktas_pavadinimas, kiekis)
+            self.turinys.append(naujas_produktas)
+            print(f"{naujas_produktas.pavadinimas}, {kiekis} buvo pridėtas į saldytuvą.")
+
 
     def print_saldytuvo_turini(self):
-        for indeksas, eilute in enumerate(self.turinys, pradzia = 1):
+        for indeksas, eilute in enumerate(self.turinys):
             print(f"{indeksas} - {eilute}")
 
 
@@ -84,20 +91,26 @@ class Saldytuvas:
             for produktas in self.turinys:                   
                 print(produktas)
 
-
     def patikrinti_recepto_ingridientus(self, esami_ingridientai: Receptas):
         visi_ingridientai_prieinami = True
-
-        for ingridientas, kiekis in esami_ingridientai.items():
-            esamas_ingridientas = self.esami_ingridientas(ingridientas)
-            if  esamas_ingridientas is None or esamas_ingridientas['kiekis'] < kiekis:
-                 visi_ingridientai_prieinami = False
-                 break
-
+        for ingridientas, kiekis in esami_ingridientai.ingridientai:
+            esamas_ingridientas = self.patikrinti_produkta(ingridientas.pavadinimas)[1]
+            if esamas_ingridientas is None or esamas_ingridientas.kiekis < kiekis:
+                visi_ingridientai_prieinami = False
+                break
         if visi_ingridientai_prieinami:
-            print(f"Pakankamas kiekis ingredientų recepto gaminimui.")
+            print("Pakankamas kiekis ingredientų recepto gaminimui.")
         else:
-            print(f"Nepakankamas kiekis šių ingredientų saldytuve.")
+            print("Nepakankamas kiekis šių ingredientų saldytuve.")            
+
+
+    def recepto_turinys(self, turinys):
+        if self.turinys:
+            print('---Receptas---')       
+            for ingridientas, kiekis in self.turinys:
+                print(f"{ingridientas['produktas']}: {kiekis['kiekis']}")
+        else:
+            print("Recepte nera siu ingridientu.")
                 
         
    
@@ -110,17 +123,18 @@ def main():
         print('0: iseiti is programos')
         print('1: prideti produktus')
         print('2: isimti produktus ')
-        print('3: pasirinkti produkta')
-        print('4: pasirinkti kieki')
+        print('3: patikrinti produkta ar yra saldytuve')
+        print('4: prideti produkta i recepta')
         print('5: saldytuvo turinys')
         print('6: pasirinkti recepta')
-        choice = input('Choice 0-6')
+        print('7: recepto turinys')
+        choice = input('Choice 0-7')
         if choice == "0":
            break
         elif choice == "1":
             produktas = input('Pridetas produktas:')
             kiekis = float(input('Prideto produkto kiekis:'))
-            saldytuvas.prideti_produktus(produktas, kiekis)
+            saldytuvas.prideti_produkta(produktas, kiekis)
         elif choice == "2": 
              produktas = input('Išimtas produktas:')
              kiekis= float(input('Išimto produkto kiekis:'))
@@ -133,31 +147,33 @@ def main():
              else:
                   print(f'{produktas} nerastas šaldytuve') 
         elif choice == "4": 
-             kiekis = input('Produkto kiekis:')
-             kiekis = saldytuvas.patikrinti_produkto_kieki(kiekis)
-             if kiekis is not None:
-                print(f'{produktas} {kiekis}')
-             else:
-                print(f'{produktas} nerastas šaldytuve')
+             produktas = input('Produkto pavadinimas:')
+             kiekis = float(input('Prideto produkto kiekis:'))
+             receptas.prideti_produktus(produktas, kiekis)
         elif choice == "5":   
                 print('Saldytuvo turinys')
                 saldytuvas.print_saldytuvo_turini()    
         elif choice == "6":  
-             saldytuvas.patikrinti_recepto_ingridientus(receptas)
+             produktas = input('Produkto pavadinimas:')
+             kiekis = float(input('Prideto produkto kiekis:'))
+             receptas.patikrinti_ingridientu_kiekius(produktas, kiekis)
+        elif choice == "7":
+                print('Recepto turinys')
+                receptas.print_turini()    
         else:
                 print("Bad choice, try again") 
 
 
 saldytuvas = Saldytuvas()
-saldytuvas.prideti_produkta('pienas', 1)
-saldytuvas.prideti_produkta('majonezas', 2)
-saldytuvas.prideti_produkta('kiausiniai', 15)
-saldytuvas.prideti_produkta('suris', 3)
+saldytuvas.prideti_produkta('milk', 1.0)
+saldytuvas.prideti_produkta('majonezas', 2.0)
+saldytuvas.prideti_produkta('kiausiniai', 15.0)
+saldytuvas.prideti_produkta('suris', 3.0)
 
 receptas = Receptas()
-receptas.ingridientai(Produktas('majonezas', 1), 1)
-receptas.ingridientai(Produktas('suris', 1), 1)
-receptas.ingridientai(Produktas('kiausiniai', 5), 1)
+receptas.prideti_produktus('majonezas', 1.0)
+receptas.prideti_produktus('suris', 1.0)
+receptas.prideti_produktus('kiausiniai', 5.0)
 
 main()                     
               
